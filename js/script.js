@@ -1,39 +1,69 @@
+model = [
+    {name: 'Harvard Square',
+     Lat: 42.372958,
+     Lng: -71.062594,
+     info: 'It is the historic center of Cambridge.'},
+     {name: 'Massachusetts Institute of Technology',
+     Lat: 42.359100,
+     Lng: -71.093400,
+     info: 'A private research university, modern and postmodern architecture, a living museum of works by noted architects'},
+     {name: 'Union Oyster House',
+     Lat: 42.360082,
+     Lng: -71.058880,
+     info: 'Historic eatery serving chowder & other New England seafood standards since 1826.'},
+     {name: 'Fenway Park',
+     Lat: 42.340394,
+     Lng: -71.094886,
+     info: 'Fenway Park is a baseball park Kenmore Square,it has been the home of the Boston Red Sox sincen 1912.'},
+     {name: 'Museum of Sience',
+     Lat: 42.367799,
+     Lng: -71.070808,
+     info: 'Exhibits in this extensive science museum encourage learning through hands-on exploration of science and technology.'},
+     {name: 'New England Aquarium',
+     Lat: 42.359239,
+     Lng: -71.049189,
+     info: 'A global leader in ocean exploration and marine conservation.'},
+     {name: 'Faneuil Hall',
+     Lat: 42.360133,
+     Lng: -71.055555,
+     info:'Faneuil Hall Marketplace, one of the nations premier urban marketplaces, is a popular attraction in Boston.'},
+     {name: 'Pizzeria Regina',
+     Lat: 42.356119,
+     Lng: -71.132499,
+     info: "Boston's best pizza since 1926"}];
+    
+
 var map;
 function initMap() {
-  
-  var myCenter=new google.maps.LatLng(42.372958, -71.062594);
+
   map = new google.maps.Map(document.getElementById('map'), {
-    center: myCenter,
-    zoom: 5,
     mapTypeId: google.maps.MapTypeId.ROADMAP
   });
-  console.log(map);
+ 
+  var bounds = new google.maps.LatLngBounds();
+  var infowindow = new google.maps.InfoWindow(), i = 0;
   
-  var marker=new google.maps.Marker({
-    position: myCenter,
-    title: 'Click to zoom'
-    //animation:google.maps.Animation.BOUNCE
-  });
-  
-  var infowindow = new google.maps.InfoWindow({
-    content: "Hello World!"
-  });
+  // Add the markers and infowindows to the map
+  for (var i = 0; i < model.length; i++) {
+    var position = new google.maps.LatLng(model[i].Lat, model[i].Lng);
+    bounds.extend(position);
+    
+    var marker=new google.maps.Marker({
+      position: position,
+      title: 'Click to zoom'
+    });
 
-  google.maps.event.addListener(map, 'click', function(event) {
-    placeMarker(event.latLng);
-  });
+    marker.setMap(map);
   
-  google.maps.event.addListener(marker, 'click', function() {
-    infowindow.open(map,marker);
-  });
-
-  marker.setMap(map);
-  
-  // Zoom to 9 when clicking on marker
-  google.maps.event.addListener(marker,'click',function() {
-    map.setZoom(9);
-    map.setCenter(marker.getPosition());
-  });
+    google.maps.event.addListener(marker, 'click', (function(marker, i) {
+      return function() {
+        infowindow.setContent(model[i].info);
+        infowindow.open(map, marker);
+      }
+    })(marker, i));
+    
+    map.fitBounds(bounds);
+  }
 }
 
 function placeMarker(location) {
