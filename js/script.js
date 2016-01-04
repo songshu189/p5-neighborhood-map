@@ -45,22 +45,27 @@ function initMap() {
   
   // Add the markers and infowindows to the map
   for (var i = 0; i < model.length; i++) {
-    var position = new google.maps.LatLng(model[i].Lat, model[i].Lng);
+    var location = model[i];
+    var position = new google.maps.LatLng(location.Lat, location.Lng);
     bounds.extend(position);
     
     var marker=new google.maps.Marker({
       position: position,
-      title: 'Click to zoom'
+      title: location.name
     });
 
     marker.setMap(map);
   
-    google.maps.event.addListener(marker, 'click', (function(marker, i) {
+    google.maps.event.addListener(marker, 'click', (function(marker, info) {
       return function() {
-        infowindow.setContent(model[i].info);
+        marker.setAnimation(google.maps.Animation.BOUNCE);
+        setTimeout(function () {
+            marker.setAnimation(null);
+        }, 700); // current maps duration of one bounce (v3.13)
+        infowindow.setContent(info);
         infowindow.open(map, marker);
       }
-    })(marker, i));
+    })(marker, location.info));
     
     map.fitBounds(bounds);
   }
