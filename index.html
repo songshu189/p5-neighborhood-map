@@ -2,11 +2,39 @@
 <html>
   <head>
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <title> Neighborhood Map</title>
+    <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" type="text/css" href="css/style.css" />
-    
   </head>
 <body>
-    <div id="map"></div>
+    <div class="app-container">
+        <div class="map-container">
+            <div id="map"></div>
+        </div>
+        <div class="search-container">
+            <div class="menu-hamburger-container">
+                <button class="menu-hamburger"></button>
+            </div>
+            <div class="searchbox-container"> 
+                <form onsubmit="return false;"> 
+                    <input class="searchbox" value="" autofocus>
+                </form>
+                <div class="searchicon-container">
+                    <button class="searchicon"></button>
+                </div>
+            </div>
+            <div class="locations-container">
+                <ul>
+                    <li class="location-item" >
+                        <div class="location-icon" ></div>
+                        <span class="location" >Fenway Park Yawkey Way, Boston, MA</span> 
+                    </li>
+             </ul>
+            </div>
+        </div>
+        <div class="menu-container">
+        </div>
+    </div>
     <script src="https://maps.googleapis.com/maps/api/js"></script>
     <script src="js/script.js"></script>
   </body>
