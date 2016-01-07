@@ -8,7 +8,7 @@ html, body {
     padding: 0; 
 }
 
-a, button, h1, h2, h3, h4, h5, h6, input, ol, p, textarea, th, ul {
+button, input, ul, a {
     margin: 0;
     padding: 0;
     border: 0;
@@ -122,7 +122,6 @@ a, button, h1, h2, h3, h4, h5, h6, input, ol, p, textarea, th, ul {
 }
 
 .location-item {
-    position: relative;
     color: #8C8C8C;
     font-size: 12px;
     line-height: 24px;
@@ -131,10 +130,14 @@ a, button, h1, h2, h3, h4, h5, h6, input, ol, p, textarea, th, ul {
     padding-bottom: 7px;
     border-top: 1px solid #e6e6e6;
     cursor: default;
-    direction: ltr;
-    text-align: left;
-    display: flex;
 }
+
+.location-item:hover {
+    color: #8C8C8C;
+    background-color: #f2f2f2;
+    cursor: pointer
+}
+
 
 .location-icon {
     float: left;
@@ -147,4 +150,10 @@ a, button, h1, h2, h3, h4, h5, h6, input, ol, p, textarea, th, ul {
 .location {
     color: #333;
     font-size: 13px;
+}
+
+.infodiv {
+    width: 360px;
+    text-align: justify;
+    text-justify: inter-word;
 }

@@ -81,7 +81,9 @@ function setMarkers(locations) {
         setTimeout(function () {
             marker.setAnimation(null);
         }, 700); // current maps duration of one bounce (v3.13)
-        infowindow.setContent(info);
+        infowindow.setContent('<h2>' + 
+                marker.title + '</h2>' + 
+                '<div class="infodiv">' + info +'</div');
         infowindow.open(map, marker);
       }
     })(marker, location.info));
@@ -152,7 +154,7 @@ var ViewModel = function() {
     self.resultList = ko.computed(function(){
         var filtered = ko.utils.arrayFilter(self.locations(), function(location){
                 var searchItem = self.searchItem().toLowerCase();
-                console.log(searchItem);
+                //console.log(searchItem);
                 return location.name.toLowerCase().indexOf(searchItem) >= 0;
             });
             //console.log(filtered);
