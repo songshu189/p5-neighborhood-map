@@ -48,29 +48,33 @@ model = [
 ];
     
 
-var map;
-function initMap() {
+var map = null,
+    markers = [];
 
+function initMap() {
   map = new google.maps.Map(document.getElementById('map'), {
     mapTypeId: google.maps.MapTypeId.ROADMAP
   });
- 
+}
+
+function setMarkers(locations) {
   var bounds = new google.maps.LatLngBounds();
   var infowindow = new google.maps.InfoWindow(), i = 0;
   
   // Add the markers and infowindows to the map
-  for (var i = 0; i < model.length; i++) {
-    var location = model[i];
+  for (; i < locations.length; i++) {
+    var location = locations[i];
     var position = new google.maps.LatLng(location.Lat, location.Lng);
     bounds.extend(position);
     
     var marker=new google.maps.Marker({
       position: position,
-      title: location.name
+      title: location.name,
+      map: map
     });
-
-    marker.setMap(map);
-  
+    
+    markers.push(marker);
+    
     google.maps.event.addListener(marker, 'click', (function(marker, info) {
       return function() {
         marker.setAnimation(google.maps.Animation.BOUNCE);
@@ -84,6 +88,16 @@ function initMap() {
     
     map.fitBounds(bounds);
   }
+}
+
+function clearMarkers() {
+    var marker=null, i=0;
+    for(; i<markers.length; i++) {
+        marker = markers[i];
+        marker.setMap(null);
+    }
+    
+    markers = [];
 }
 
 function placeMarker(location) {
@@ -110,4 +124,30 @@ function detectBrowser() {
   }
 }
 
-google.maps.event.addDomListener(window, 'load', initMap);
+var ViewModel = function() {
+    var self = this;
+    
+    initMap();
+    
+    self.locations= ko.observableArray(model);
+    self.searchItem = ko.observable('');
+    
+    self.resultList = ko.computed(function(){
+        var filtered = ko.utils.arrayFilter(self.locations(), function(location){
+                var searchItem = self.searchItem().toLowerCase();
+                console.log(searchItem);
+                return location.name.toLowerCase().indexOf(searchItem) >= 0;
+            });
+            //console.log(filtered);
+        
+        clearMarkers();
+        setMarkers(filtered);
+        return filtered;
+    });
+};
+
+//google.maps.event.addDomListener(window, 'load', initMap);
+
+
+
+ko.applyBindings(new ViewModel());

@@ -17,24 +17,25 @@
             </div>
             <div class="searchbox-container"> 
                 <form onsubmit="return false;"> 
-                    <input class="searchbox" value="" autofocus>
+                    <input class="searchbox" data-bind="textInput: searchItem" autofocus>
                 </form>
                 <div class="searchicon-container">
                     <button class="searchicon"></button>
                 </div>
             </div>
             <div class="locations-container">
-                <ul>
+                <ul data-bind="foreach: resultList()">
                     <li class="location-item" >
                         <div class="location-icon" ></div>
-                        <span class="location" >Fenway Park Yawkey Way, Boston, MA</span> 
+                        <span class="location" data-bind="text: name"></span> 
                     </li>
-             </ul>
+                </ul>
             </div>
         </div>
         <div class="menu-container">
         </div>
     </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.0/knockout-min.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js"></script>
     <script src="js/script.js"></script>
   </body>
