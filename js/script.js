@@ -72,7 +72,7 @@ function setMarkers(locations) {
       title: location.name,
       map: map
     });
-    
+    console.log(marker);
     markers.push(marker);
     
     google.maps.event.addListener(marker, 'click', (function(marker, info) {
@@ -88,6 +88,22 @@ function setMarkers(locations) {
     
     map.fitBounds(bounds);
   }
+}
+
+function resetMarkers(locations) {
+    var i=0, j=0, set=false, marker=null;
+    
+    for(; i<markers.length; i++) {
+        marker = markers[i];
+        set = false;
+        for(j=0; j<locations.length; j++) {
+            if(marker.title == locations[j].name) {
+                set = true;
+                break;
+            }
+        }
+        marker.setMap(set?map:null);
+    }
 }
 
 function clearMarkers() {
@@ -128,6 +144,7 @@ var ViewModel = function() {
     var self = this;
     
     initMap();
+    setMarkers(model);
     
     self.locations= ko.observableArray(model);
     self.searchItem = ko.observable('');
@@ -140,8 +157,8 @@ var ViewModel = function() {
             });
             //console.log(filtered);
         
-        clearMarkers();
-        setMarkers(filtered);
+        //clearMarkers();
+        resetMarkers(filtered);
         return filtered;
     });
 };
