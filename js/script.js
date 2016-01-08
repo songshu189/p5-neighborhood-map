@@ -44,78 +44,31 @@ model = [
      Lat: 42.339457,
      Lng: -71.094143,
      info: "Explore one of the most comprehensive museums in the world with art from ancient Egyptian to contemporary"}
-     
 ];
     
-
 var map = null,
+    infowindow = null;
     markers = [];
 
 function initMap() {
-  map = new google.maps.Map(document.getElementById('map'), {
-    mapTypeId: google.maps.MapTypeId.ROADMAP
-  });
-}
-
-function setMarkers(locations) {
-  var bounds = new google.maps.LatLngBounds();
-  var infowindow = new google.maps.InfoWindow(), i = 0;
-  
-  // Add the markers and infowindows to the map
-  for (; i < locations.length; i++) {
-    var location = locations[i];
-    var position = new google.maps.LatLng(location.Lat, location.Lng);
-    bounds.extend(position);
-    
-    var marker=new google.maps.Marker({
-      position: position,
-      title: location.name,
-      map: map
+    map = new google.maps.Map(document.getElementById('map'), {
+        mapTypeId: google.maps.MapTypeId.ROADMAP
     });
-    console.log(marker);
-    markers.push(marker);
-    
-    google.maps.event.addListener(marker, 'click', (function(marker, info) {
-      return function() {
-        marker.setAnimation(google.maps.Animation.BOUNCE);
-        setTimeout(function () {
-            marker.setAnimation(null);
-        }, 700); // current maps duration of one bounce (v3.13)
-        infowindow.setContent('<h2>' + 
-                marker.title + '</h2>' + 
-                '<div class="infodiv">' + info +'</div');
-        infowindow.open(map, marker);
-      }
-    })(marker, location.info));
-    
-    map.fitBounds(bounds);
-  }
+    infowindow = new google.maps.InfoWindow();
 }
 
-function resetMarkers(locations) {
-    var i=0, j=0, set=false, marker=null;
-    
-    for(; i<markers.length; i++) {
-        marker = markers[i];
-        set = false;
-        for(j=0; j<locations.length; j++) {
-            if(marker.title == locations[j].name) {
-                set = true;
-                break;
-            }
-        }
-        marker.setMap(set?map:null);
-    }
-}
-
+// Hide all markers 
 function clearMarkers() {
-    var marker=null, i=0;
-    for(; i<markers.length; i++) {
-        marker = markers[i];
-        marker.setMap(null);
+    for(var i=0; i<markers.length; i++) {
+        markers[i].setMap(null);
     }
-    
-    markers = [];
+}
+
+// Show only those markers in filtered locations list
+function resetMarkers(locations) {
+    for(var i=0; i<locations.length; i++) {
+       locations[i].marker.setMap(map);
+    }
 }
 
 function placeMarker(location) {
@@ -142,24 +95,72 @@ function detectBrowser() {
   }
 }
 
+var Location = function(data) {
+    this.data = data;
+
+    this.position = new google.maps.LatLng(data.Lat, data.Lng);
+    
+    this.marker=new google.maps.Marker({
+                        position: this.position,
+                        title: data.name,
+                        map: map
+                    });
+};
+
+// Return a function to show the marker and infowindow of the location
+var showInfoWindow = function(location, self) {
+    return function() {
+        self.currentLocation(location);
+        
+        // Let the marker bounce once
+        location.marker.setAnimation(google.maps.Animation.BOUNCE);
+        setTimeout(function () {
+            location.marker.setAnimation(null);
+            }, 700); // current maps duration of one bounce (v3.13)
+        
+        // Set the infowindow content
+        infowindow.setContent($('#marker-info').html());
+        infowindow.open(map, location.marker);
+    };
+};
+
 var ViewModel = function() {
     var self = this;
     
     initMap();
-    setMarkers(model);
     
-    self.locations= ko.observableArray(model);
+    var bounds = new google.maps.LatLngBounds();
+    var locations = [];//ko.observableArray();
+    
+    for(var i=0; i<model.length; i++) {
+        var location = new Location(model[i]);
+        
+        markers.push(location.marker);
+        locations.push(location);
+        bounds.extend(location.position);
+        
+        google.maps.event.addListener(location.marker, 'click', showInfoWindow(location, self));
+
+        map.fitBounds(bounds);
+    }
+    
+    self.currentLocation = ko.observable(locations[0]);
+
     self.searchItem = ko.observable('');
     
+    self.showInfoWindow = function(data) {
+        showInfoWindow(data, self)();
+    }
+    
     self.resultList = ko.computed(function(){
-        var filtered = ko.utils.arrayFilter(self.locations(), function(location){
+        var filtered = ko.utils.arrayFilter(locations, function(location){
                 var searchItem = self.searchItem().toLowerCase();
                 //console.log(searchItem);
-                return location.name.toLowerCase().indexOf(searchItem) >= 0;
+                return location.data.name.toLowerCase().indexOf(searchItem) >= 0;
             });
             //console.log(filtered);
         
-        //clearMarkers();
+        clearMarkers();
         resetMarkers(filtered);
         return filtered;
     });
