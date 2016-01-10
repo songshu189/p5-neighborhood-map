@@ -19,7 +19,7 @@ model = [
      Lat: 42.345844,
      Lng: -71.098782,
      info: 'Fenway Park is a baseball park Kenmore Square,it has been the home of the Boston Red Sox sincen 1912.'},
-     {name: 'Museum of Sience',
+     {name: 'Museum of Science',
      addr: '1 Science Park, Boston, MA 02114',
      Lat: 42.367799,
      Lng: -71.070808,
@@ -40,7 +40,7 @@ model = [
      Lng: -71.166876,
      info: "A private Jesuit Catholic research university located in the village of Chestnut Hill, Massachusetts"},
      {name: 'Museum of Fine Arts',
-     addr: '465 Huntington Ave Boston, MA 02115',
+     addr: '465 Huntington Ave, Boston, MA 02115',
      Lat: 42.339457,
      Lng: -71.094143,
      info: "Explore one of the most comprehensive museums in the world with art from ancient Egyptian to contemporary"}
@@ -55,6 +55,7 @@ function initMap() {
         mapTypeId: google.maps.MapTypeId.ROADMAP
     });
     infowindow = new google.maps.InfoWindow();
+    ko.applyBindings(new ViewModel());
 }
 
 // Hide all markers 
@@ -111,6 +112,8 @@ var Location = function(data) {
 var showInfoWindow = function(location, self) {
     return function() {
         self.currentLocation(location);
+
+        self.getotherapidata(location);
         
         // Let the marker bounce once
         location.marker.setAnimation(google.maps.Animation.BOUNCE);
@@ -127,7 +130,7 @@ var showInfoWindow = function(location, self) {
 var ViewModel = function() {
     var self = this;
     
-    initMap();
+    //initMap();
     
     var bounds = new google.maps.LatLngBounds();
     var locations = [];//ko.observableArray();
@@ -164,10 +167,58 @@ var ViewModel = function() {
         resetMarkers(filtered);
         return filtered;
     });
+    
+    self.flickrimgurl = ko.observable('');
+    self.flickrimgsrc = ko.observable('');
+    
+    self.getotherapidata = function(location) {
+
+        //console.log(location.data);
+
+        var addr = location.data.addr;
+        var result = /,(\s\w*\s?\w+,\s[A-Z]{2})/g.exec(addr);
+        var name = location.data.name + ',' + result[1];
+        var placefindurl = flickrfindurl + apikey + '&query=' + name + format;
+        //console.log(name);
+        
+        $.getJSON(placefindurl, function (json) {
+            var pid = json.places.place[0].place_id;
+            //console.log(pid);
+            var photosearchurl = flickrsearchurl + apikey + '&text=' + name 
+                        + '&place_id=' + pid + '&per_page=5' + format;
+            $.getJSON(photosearchurl, function (json) {
+                var photos = json.photos.photo;
+                //console.log(photos);
+                var i = Math.floor((Math.random() * photos.length));
+                var sizeurl = flickrsizeurl + apikey + '&photo_id=' + photos[i].id + format;;
+                
+                $.getJSON(sizeurl, function (sizes) {
+                    var imgsizes = sizes.sizes.size;
+                    var idx = 0, diff0=1000, diff=0;
+                    
+                    // find the index of the image closest to 500
+                    for(i=0; i<imgsizes.length; i++) {
+                        diff = Math.abs(imgsizes[i].width - 500);
+                        if(diff < diff0) {
+                            diff0 = diff;
+                            idx = i;
+                        }
+                    }
+                    $("#detail-container").show();
+                    self.flickrimgurl(imgsizes[idx].url);
+                    self.flickrimgsrc(imgsizes[idx].source);
+                });
+            });
+        });
+	};
+    
+    self.wikilist = ko.computed(function() {
+        return ko.utils.arrayMap([]);
+    });
 };
 
-//google.maps.event.addDomListener(window, 'load', initMap);
-
-
-
-ko.applyBindings(new ViewModel());
+var flickrfindurl = 'https://api.flickr.com/services/rest/?method=flickr.places.find';
+var flickrsearchurl = 'https://api.flickr.com/services/rest/?method=flickr.photos.search';
+var flickrsizeurl = 'https://api.flickr.com/services/rest/?method=flickr.photos.getSizes';
+var apikey = '&api_key=b6fdb508d51ea1e2f7fab29e76cb6fc1';
+var format = '&format=json&nojsoncallback=1';
