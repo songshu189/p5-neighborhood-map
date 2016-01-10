@@ -32,6 +32,17 @@
                 </ul>
             </div>
         </div>
+        <div id="detail-container" class="detail-container" style="display:none">
+            <button class"back-button">Back to Search Results</button>
+            <div class="flickr-image">
+                <a data-bind="attr: { href: flickrimgurl }" ><img data-bind="attr: {src:flickrimgsrc}"/></a>
+            </div>
+            <div class="wiki-list">
+                <ul data-bind="foreach: wikilist()">
+                    <li data-bind="text: wikiurl"></li>
+                </ul>
+            </div>
+        </div>
         <div class="menu-container">
         </div>
     </div>
@@ -41,7 +52,9 @@
     </div>
     <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.0/knockout-min.js"></script>
-    <script src="https://maps.googleapis.com/maps/api/js"></script>
+    <!--<script src="js/libs/jquery.min.js"></script>
+    <script src="js/libs/knockout-3.4.0.js"></script>-->
+    <script src="https://maps.googleapis.com/maps/api/js?&callback=initMap" async defer></script>
     <script src="js/script.js"></script>
   </body>
 </html>

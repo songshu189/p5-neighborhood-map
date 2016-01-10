@@ -157,3 +157,17 @@ button, input, ul, a {
     text-align: justify;
     text-justify: inter-word;
 }
+
+.detail-container {
+    width: 368px;
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    z-index: 12;
+    opacity: 0.5;
+}
+
+img {
+    width: 100%;
+    max-width: 100%;
+}
