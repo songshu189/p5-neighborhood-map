@@ -129,9 +129,7 @@ var showInfoWindow = function(location, self) {
 
 var ViewModel = function() {
     var self = this;
-    
-    //initMap();
-    
+
     var bounds = new google.maps.LatLngBounds();
     var locations = [];//ko.observableArray();
     
@@ -173,8 +171,8 @@ var ViewModel = function() {
     
     self.getotherapidata = function(location) {
 
+        $('#searchicon').toggleClass('searchicon loading');
         //console.log(location.data);
-
         var addr = location.data.addr;
         var result = /,(\s\w*\s?\w+,\s[A-Z]{2})/g.exec(addr);
         var name = location.data.name + ',' + result[1];
@@ -207,6 +205,8 @@ var ViewModel = function() {
                     $("#detail-container").show();
                     self.flickrimgurl(imgsizes[idx].url);
                     self.flickrimgsrc(imgsizes[idx].source);
+                    $('#searchicon').toggleClass('searchicon loading');
+                    $('#locations-container').hide();
                 });
             });
         });

@@ -19,11 +19,11 @@
                 <form onsubmit="return false;"> 
                     <input class="searchbox" data-bind="textInput: searchItem" autofocus>
                 </form>
-                <div class="searchicon-container">
-                    <button class="searchicon"></button>
+                <div id="searchicon-container" class="searchicon-container">
+                    <button id="searchicon" class="searchicon"></button>
                 </div>
             </div>
-            <div class="locations-container">
+            <div id="locations-container" class="locations-container">
                 <ul data-bind="foreach: resultList()">
                     <li class="location-item" data-bind="click: $parent.showInfoWindow">
                         <div class="location-icon" ></div>
