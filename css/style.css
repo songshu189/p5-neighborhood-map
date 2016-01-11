@@ -199,6 +199,21 @@ button, input, ul, a {
     opacity: 0.9;
 }
 
+.back-button {
+    background-color: #fff;
+    border-radius: 0 0 2px 2px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    box-sizing: border-box;
+    font-size: 13px;
+    padding: 8px 20px;
+    width: 100%;
+    z-index: 5;
+    text-align: left;
+    text-decoration: underline;
+    color: #4285F4;
+    cursor: pointer;
+}
+
 img {
     width: 100%;
     max-width: 100%;

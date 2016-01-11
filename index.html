@@ -33,13 +33,16 @@
             </div>
         </div>
         <div id="detail-container" class="detail-container" style="display:none">
-            <button class"back-button">Back to Search Results</button>
+            <button class="back-button" data-bind="click: backToList">Back to Search Results</button>
             <div class="flickr-image">
-                <a data-bind="attr: { href: flickrimgurl }" ><img data-bind="attr: {src:flickrimgsrc}"/></a>
+                <img data-bind="attr: {src:flickrimgsrc}"/>
+                <a data-bind="attr: {href: flickrimgurl }" ></a>
             </div>
             <div class="wiki-list">
                 <ul data-bind="foreach: wikilist()">
-                    <li data-bind="text: wikiurl"></li>
+                    <li>
+                        <a data-bind="attr:{ href: link }, text: title" ></a>
+                    </li>
                 </ul>
             </div>
         </div>

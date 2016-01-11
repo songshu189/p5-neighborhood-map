@@ -165,9 +165,13 @@ var ViewModel = function() {
         resetMarkers(filtered);
         return filtered;
     });
-    
+    self.backToList = function() {
+        $("#detail-container").hide();
+        $('#locations-container').show();
+    }
     self.flickrimgurl = ko.observable('');
     self.flickrimgsrc = ko.observable('');
+    self.wikilist = ko.observableArray();
     
     self.getotherapidata = function(location) {
 
@@ -193,7 +197,7 @@ var ViewModel = function() {
                 $.getJSON(sizeurl, function (sizes) {
                     var imgsizes = sizes.sizes.size;
                     var idx = 0, diff0=1000, diff=0;
-                    
+                    console.log(name, imgsizes);
                     // find the index of the image closest to 500
                     for(i=0; i<imgsizes.length; i++) {
                         diff = Math.abs(imgsizes[i].width - 500);
@@ -210,11 +214,33 @@ var ViewModel = function() {
                 });
             });
         });
-	};
+        
+        var wikiRequestTimeout = setTimeout(function() {
+            self.wikilist().removeAll();
+            self.wikilist().push({link:'#', title:'failed to get wikipedia resources'});
+        }, 8000);
+        
+        var wikiURL = 'https://en.wikipedia.org/w/api.php?action=opensearch&search=' 
+                    + location.data.name + '&format=json&callback=wikiCallback';
     
-    self.wikilist = ko.computed(function() {
-        return ko.utils.arrayMap([]);
-    });
+        
+        $.ajax({
+            url: wikiURL,
+            dataType: 'jsonp',
+            success: function(data) {
+                console.log(data);
+                // do something with data
+                var title = data[1]
+                var link = data[3];
+                self.wikilist.removeAll();
+                for(var i=0; i<link.length; i++) {
+                    //console.log(title[i], link[i]);
+                    self.wikilist.push({link:link[i], title:title[i]});
+                }
+                clearTimeout(wikiRequestTimeout);
+            }
+        });
+	};
 };
 
 var flickrfindurl = 'https://api.flickr.com/services/rest/?method=flickr.places.find';
