@@ -221,7 +221,7 @@ var ViewModel = function() {
         }, 8000);
         
         var wikiURL = 'https://en.wikipedia.org/w/api.php?action=opensearch&search=' 
-                    + location.data.name + ' Boston' + '&format=json&callback=wikiCallback';
+                    + location.data.name + '&format=json&callback=wikiCallback';
     
         
         $.ajax({

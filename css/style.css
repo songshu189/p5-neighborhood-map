@@ -147,14 +147,12 @@ button, input, ul, a {
     background-color: #fff;
     border-radius: 0 0 2px 2px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-    font-size: 15px;
+    font-size: 13px;
     overflow: hidden;
     width: 368px;
 }
 
 .location-item {
-    color: #8C8C8C;
-    font-size: 12px;
     line-height: 24px;
     min-height: 24px;
     padding-top: 6px;
@@ -164,7 +162,6 @@ button, input, ul, a {
 }
 
 .location-item:hover {
-    color: #8C8C8C;
     background-color: #f2f2f2;
     cursor: pointer
 }
@@ -179,7 +176,6 @@ button, input, ul, a {
 
 .location {
     color: #333;
-    font-size: 13px;
 }
 
 .infodiv {
@@ -212,6 +208,13 @@ button, input, ul, a {
     text-decoration: underline;
     color: #4285F4;
     cursor: pointer;
+}
+
+.wiki-list {
+    font-size: 13px;
+}
+.wiki-item {
+
 }
 
 img {
