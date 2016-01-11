@@ -172,6 +172,7 @@ var ViewModel = function() {
     self.flickrimgurl = ko.observable('');
     self.flickrimgsrc = ko.observable('');
     self.wikilist = ko.observableArray();
+    self.flickrimglist = ko.observableArray();
     
     self.getotherapidata = function(location) {
 
@@ -183,6 +184,8 @@ var ViewModel = function() {
         var placefindurl = flickrfindurl + apikey + '&query=' + name + format;
         //console.log(name);
         
+        //console.log(self.flickrimglist());
+        var imglist = [];
         $.getJSON(placefindurl, function (json) {
             var pid = json.places.place[0].place_id;
             //console.log(pid);
@@ -191,7 +194,9 @@ var ViewModel = function() {
             $.getJSON(photosearchurl, function (json) {
                 var photos = json.photos.photo;
                 //console.log(photos);
-                var i = Math.floor((Math.random() * photos.length));
+                //var i = Math.floor((Math.random() * photos.length));
+                var cc=0;
+                for(var i=0; i<photos.length; i++){
                 var sizeurl = flickrsizeurl + apikey + '&photo_id=' + photos[i].id + format;;
                 
                 $.getJSON(sizeurl, function (sizes) {
@@ -199,19 +204,31 @@ var ViewModel = function() {
                     var idx = 0, diff0=1000, diff=0;
                     //console.log(name, imgsizes);
                     // find the index of the image closest to 500
-                    for(i=0; i<imgsizes.length; i++) {
-                        diff = Math.abs(imgsizes[i].width - 500);
+                    for(var j=0; j<imgsizes.length; j++) {
+                        diff = Math.abs(imgsizes[j].width - 500);
                         if(diff < diff0) {
                             diff0 = diff;
-                            idx = i;
+                            idx = j;
                         }
                     }
-                    $("#detail-container").show();
-                    self.flickrimgurl(imgsizes[idx].url);
-                    self.flickrimgsrc(imgsizes[idx].source);
+                    cc += 1;
+                    imglist.push(imgsizes[idx].source);
+                    if(cc == photos.length) {
+                    self.flickrimglist.removeAll();
+                    $('#flexslider').removeData("flexslider");
+                    $('#slides').html('');
+                    self.flickrimglist(imglist);
+
+                    $('#flexslider').flexslider({animation: "slide"});
+
+                    $('#detail-container').show();
+                    //self.flickrimgurl(imgsizes[idx].url);
+                    //self.flickrimgsrc(imgsizes[idx].source);
                     $('#searchicon').toggleClass('searchicon loading');
                     $('#locations-container').hide();
+                    }
                 });
+                }
             });
         });
         
@@ -228,7 +245,6 @@ var ViewModel = function() {
             url: wikiURL,
             dataType: 'jsonp',
             success: function(data) {
-                console.log(name, data);
                 // do something with data
                 var title = data[1]
                 var link = data[3];

@@ -4,6 +4,7 @@
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
     <title> Neighborhood Map</title>
     <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="css/flexslider.css" type="text/css">
     <link rel="stylesheet" type="text/css" href="css/style.css" />
   </head>
 <body>
@@ -34,9 +35,9 @@
         </div>
         <div id="detail-container" class="detail-container" style="display:none">
             <button class="back-button" data-bind="click: backToList">Back to Search Results</button>
-            <div class="flickr-image">
-                <img data-bind="attr: {src:flickrimgsrc}"/>
-                <a data-bind="attr: {href: flickrimgurl }" ></a>
+            <div id="flexslider" class="flexslider">
+                <ul id='slides' class="slides"data-bind="template: { name: 'flex-template', foreach: flickrimglist}">
+                </ul>
             </div>
             <div class="wiki-list">
                 <ul data-bind="foreach: wikilist()">
@@ -53,11 +54,22 @@
         <h2 data-bind="text: data.name"></h2>
         <div class="infodiv" data-bind="text: data.info"></div>
     </div>
-    <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+    
+    
+    <script type="text/html" id="flex-template">
+        <li>
+            <img data-bind="attr: {src: $data}"/>
+        </li>
+    </script>
+    <!-- jQuery -->
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<script src="js/libs/jquery-1.7.min.js">\x3C/script>')</script>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.0/knockout-min.js"></script>
     <!--<script src="js/libs/jquery.min.js"></script>
     <script src="js/libs/knockout-3.4.0.js"></script>-->
+    <script src="js/libs/jquery.flexslider-min.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js?&callback=initMap" async defer></script>
-    <script src="js/script.js"></script>
+    <script src="js/script.js"></script>   
   </body>
 </html>
