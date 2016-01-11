@@ -197,7 +197,7 @@ var ViewModel = function() {
                 $.getJSON(sizeurl, function (sizes) {
                     var imgsizes = sizes.sizes.size;
                     var idx = 0, diff0=1000, diff=0;
-                    console.log(name, imgsizes);
+                    //console.log(name, imgsizes);
                     // find the index of the image closest to 500
                     for(i=0; i<imgsizes.length; i++) {
                         diff = Math.abs(imgsizes[i].width - 500);
@@ -221,14 +221,14 @@ var ViewModel = function() {
         }, 8000);
         
         var wikiURL = 'https://en.wikipedia.org/w/api.php?action=opensearch&search=' 
-                    + location.data.name + '&format=json&callback=wikiCallback';
+                    + location.data.name + ' Boston' + '&format=json&callback=wikiCallback';
     
         
         $.ajax({
             url: wikiURL,
             dataType: 'jsonp',
             success: function(data) {
-                console.log(data);
+                console.log(name, data);
                 // do something with data
                 var title = data[1]
                 var link = data[3];

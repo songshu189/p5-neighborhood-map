@@ -218,3 +218,11 @@ img {
     width: 100%;
     max-width: 100%;
 }
+
+/* #### iPhone 4+ Portrait or Landscape #### */
+@media screen and (min-device-width: 320px) and (-webkit-min-device-pixel-ratio: 2){
+  /* some CSS here */
+  .searchbox-container , .locations-container, .detail-container  {
+    width: 320px;
+  }
+}
