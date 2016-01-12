@@ -1,5 +1,5 @@
 model = [
-    {name: 'Harvard Square',
+    {name: 'Harvard Squarexxx',
      addr: '18 Brattle St #352, Cambridge, MA 02138',
      Lat: 42.373109,
      Lng: -71.120248,
@@ -181,22 +181,26 @@ var ViewModel = function() {
         // Search flickr to find photos related to the location
         
         var addr = location.data.addr;
-        var result = /,(\s\w*\s?\w+,\s[A-Z]{2})/g.exec(addr);
-        var name = location.data.name + ',' + result[1];
-        var placefindurl = flickrfindurl + apikey + '&query=' + name + format;
+        var result = /,((\s\w*\s?\w+),\s[A-Z]{2})/g.exec(addr);
+
+        var citystate = result[1];
+        var city = result[2];
+        var name = location.data.name;
+        
+        var placefindurl = flickrfindurl + apikey + '&query=' + name + citystate + format;
         
         var imglist = [];
         var cc = 0;
-        
+        console.log(placefindurl);
         // Search the place_id of the location to narrow photo search results
         $.getJSON(placefindurl)
          .done(function (json) {
-            console.log(json);
+
             if(json.stat != 'ok') {
                 return ;
             }
             var pid = json.places.place[0].place_id;
-            var photosearchurl = flickrsearchurl + apikey + '&text=' + name 
+            var photosearchurl = flickrsearchurl + apikey + '&text=' + name + citystate
                         + '&place_id=' + pid + '&per_page=6' + format;
             
             // Search photos with place_id and name of the place
@@ -205,10 +209,11 @@ var ViewModel = function() {
                 processPhotoSearch(data);
              })
              .error(function() {
+                 resetSlider([], 'Failed to get flickr images');
              });
         })
         .error(function(data) {
-            //console.log(data);
+            resetSlider([], 'Failed to get flickr images');
         });
         
         var processPhotoSearch = function(json) {
@@ -232,10 +237,14 @@ var ViewModel = function() {
                  .error(function() {
                  });
             }
+            
+            if(photos_len==0) {
+                resetSlider([], 'Relevant Flickr Images(None)');
+            }
         };
         
         var processSizes = function(sizes, nn) {
-            console.log(sizes);
+
                 if(sizes.stat!='ok') {
                     return ;
                 }
@@ -262,46 +271,67 @@ var ViewModel = function() {
 
                 // Update observableArray only after all photos checked
                 if(cc == nn) {
-                    self.flickrimglist.removeAll();
-                    $('#flexslider').removeData("flexslider");
-                    $('.flex-control-nav').remove();
-                    $('.flex-direction-nav').remove();
-                    $('#slides').html('');
-                            
-                    self.flickrimglist(imglist);
-
-                    $('#flexslider').flexslider({ slideshow: false});
-
-                    $('#detail-container').show();
-                    $('#searchicon').toggleClass('searchicon loading');
-                    $('#locations-container').hide();
+                    resetSlider(imglist, 'Relevant Flickr Images');
                 }
             };
         
+        var resetSlider = function(imglist, flickrheader) {
+            $('#flexslider').removeData("flexslider");
+            $('.flex-control-nav').remove();
+            $('.flex-direction-nav').remove();
+            $('#slides').html('');
+            
+            $flickrHeader.text(flickrheader);
+            self.flickrimglist(imglist);
+
+            $('#flexslider').flexslider({ slideshow: false});
+
+            $('#detail-container').show();
+            $('#searchicon').toggleClass('searchicon loading');
+            $('#locations-container').hide();
+        };
+        
         var wikiRequestTimeout = setTimeout(function() {
-            self.wikilist().removeAll();
-            self.wikilist().push({link:'#', title:'failed to get wikipedia resources'});
+            self.wikilist([]);
+            $wikiHeader.text('Failed to get wikipedia resources');
         }, 8000);
         
-        var wikiURL = 'https://en.wikipedia.org/w/api.php?action=opensearch&search=' 
-                    + location.data.name + '&format=json&callback=wikiCallback';
-    
+        wikiRequestTimeout();
+        $wikiHeader.text('Relevant Wikipedia Links');
+        wikiSearch(name + city);
         
-        $.ajax({
-            url: wikiURL,
-            dataType: 'jsonp',
-            success: function(data) {
-                // do something with data
-                var title = data[1]
-                var link = data[3];
-                self.wikilist.removeAll();
-                for(var i=0; i<link.length; i++) {
-                    //console.log(title[i], link[i]);
-                    self.wikilist.push({link:link[i], title:title[i]});
+        function wikiSearch(search) {
+            var wikiURL = wikisearchurl + search + '&format=json&callback=wikiCallback';
+
+            $.ajax({
+                url: wikiURL,
+                dataType: 'jsonp',
+                success: function(data) {
+                    // do something with data
+                    var title = data[1]
+                    var link = data[3];
+                    if(link.length == 0) {
+                        if(search == name) {
+                            $wikiHeader.text('Relevant Wikipedia Links(None)');
+                            self.wikilist(wikilist);
+                            clearTimeout(wikiRequestTimeout);
+                        }
+                        else {
+                            wikiSearch(name);
+                        }
+                    }
+                    else {
+                        var wikilist = [];
+                        for(var i=0; i<link.length; i++) {
+                            //console.log(title[i], link[i]);
+                            wikilist.push({link:link[i], title:title[i]});
+                        }
+                        self.wikilist(wikilist);
+                        clearTimeout(wikiRequestTimeout);
+                    }
                 }
-                clearTimeout(wikiRequestTimeout);
-            }
-        });
+            });
+        }
 	};
 };
 
@@ -310,3 +340,6 @@ var flickrsearchurl = 'https://api.flickr.com/services/rest/?method=flickr.photo
 var flickrsizeurl = 'https://api.flickr.com/services/rest/?method=flickr.photos.getSizes';
 var apikey = '&api_key=b6fdb508d51ea1e2f7fab29e76cb6fc1';
 var format = '&format=json&nojsoncallback=1';
+var wikisearchurl = 'https://en.wikipedia.org/w/api.php?action=opensearch&search=';
+var $flickrHeader = $('#flickr-header');
+var $wikiHeader = $('#wikipedia-header');
