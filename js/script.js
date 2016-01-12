@@ -186,64 +186,97 @@ var ViewModel = function() {
         var placefindurl = flickrfindurl + apikey + '&query=' + name + format;
         
         var imglist = [];
+        var cc = 0;
         
         // Search the place_id of the location to narrow photo search results
-        $.getJSON(placefindurl, function (json) {
+        $.getJSON(placefindurl)
+         .done(function (json) {
+            console.log(json);
+            if(json.stat != 'ok') {
+                return ;
+            }
             var pid = json.places.place[0].place_id;
             var photosearchurl = flickrsearchurl + apikey + '&text=' + name 
                         + '&place_id=' + pid + '&per_page=6' + format;
             
             // Search photos with place_id and name of the place
-            $.getJSON(photosearchurl, function (json) {
-                var photos = json.photos.photo;
-
-                var cc=0;
-                for(var i=0; i<photos.length; i++){
-                    var sizeurl = flickrsizeurl + apikey + '&photo_id=' + photos[i].id + format;;
-
-                    // Find the available width and height of related photo
-                    $.getJSON(sizeurl, function (sizes) {
-                        var imgsizes = sizes.sizes.size;
-
-                        // find the index of those image with width closest to 500
-                        var idx = 0, diff0=1000, diff=0;
-                        for(var j=0; j<imgsizes.length; j++) {
-                            if(imgsizes[j].media.toLowerCase() == "photo") {
-                                diff = Math.abs(imgsizes[j].width - 500);
-                                if(diff < diff0) {
-                                    diff0 = diff;
-                                    idx = j;
-                                }
-                            }
-                        }
-                        
-                        cc += 1;
-                        
-                        // Do not show photos height great than width
-                        if(parseInt(imgsizes[idx].width) > (imgsizes[idx].height))
-                            imglist.push(imgsizes[idx].source);
-
-                        // Update observableArray only after all photos checked
-                        if(cc == photos.length) {
-                            
-                            self.flickrimglist.removeAll();
-                            $('#flexslider').removeData("flexslider");
-                            $('.flex-control-nav').remove();
-                            $('.flex-direction-nav').remove();
-                            $('#slides').html('');
-                            
-                            self.flickrimglist(imglist);
-
-                            $('#flexslider').flexslider({ slideshow: false});
-
-                            $('#detail-container').show();
-                            $('#searchicon').toggleClass('searchicon loading');
-                            $('#locations-container').hide();
-                        }
-                    });
-                }
-            });
+            $.getJSON(photosearchurl)
+             .done(function(data) {
+                processPhotoSearch(data);
+             })
+             .error(function() {
+             });
+        })
+        .error(function(data) {
+            //console.log(data);
         });
+        
+        var processPhotoSearch = function(json) {
+
+            if(json.stat != 'ok') {
+                return;
+            }
+            
+            var photos = json.photos.photo;
+            var photos_len = photos.length;
+            
+            cc=0;
+            for(var i=0; i<photos_len; i++){
+                var sizeurl = flickrsizeurl + apikey + '&photo_id=' + photos[i].id + format;;
+
+                // Find the available width and height of related photo
+                $.getJSON(sizeurl)
+                 .done(function(sizes) {
+                    processSizes(sizes, photos_len);
+                 })
+                 .error(function() {
+                 });
+            }
+        };
+        
+        var processSizes = function(sizes, nn) {
+            console.log(sizes);
+                if(sizes.stat!='ok') {
+                    return ;
+                }
+                
+                var imgsizes = sizes.sizes.size;
+
+                // find the index of those image with width closest to 500
+                var idx = 0, diff0=1000, diff=0;
+                for(var j=0; j<imgsizes.length; j++) {
+                    if(imgsizes[j].media.toLowerCase() == "photo") {
+                         diff = Math.abs(imgsizes[j].width - 500);
+                        if(diff < diff0) {
+                            diff0 = diff;
+                            idx = j;
+                        }
+                    }
+                }
+                        
+                cc += 1;
+                        
+                // Do not show photos height great than width
+                if(parseInt(imgsizes[idx].width) > (imgsizes[idx].height))
+                    imglist.push(imgsizes[idx].source);
+
+                // Update observableArray only after all photos checked
+                if(cc == nn) {
+                    self.flickrimglist.removeAll();
+                    $('#flexslider').removeData("flexslider");
+                    $('.flex-control-nav').remove();
+                    $('.flex-direction-nav').remove();
+                    $('#slides').html('');
+                            
+                    self.flickrimglist(imglist);
+
+                    $('#flexslider').flexslider({ slideshow: false});
+
+                    $('#detail-container').show();
+                    $('#searchicon').toggleClass('searchicon loading');
+                    $('#locations-container').hide();
+                }
+            };
         
         var wikiRequestTimeout = setTimeout(function() {
             self.wikilist().removeAll();
