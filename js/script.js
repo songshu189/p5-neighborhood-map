@@ -296,7 +296,6 @@ var ViewModel = function() {
             $wikiHeader.text('Failed to get wikipedia resources');
         }, 8000);
         
-        wikiRequestTimeout();
         $wikiHeader.text('Relevant Wikipedia Links');
         wikiSearch(name + city);
         
@@ -313,7 +312,7 @@ var ViewModel = function() {
                     if(link.length == 0) {
                         if(search == name) {
                             $wikiHeader.text('Relevant Wikipedia Links(None)');
-                            self.wikilist(wikilist);
+                            self.wikilist([]);
                             clearTimeout(wikiRequestTimeout);
                         }
                         else {
@@ -321,11 +320,14 @@ var ViewModel = function() {
                         }
                     }
                     else {
+                        
                         var wikilist = [];
-                        for(var i=0; i<link.length; i++) {
+                        var wklen = Math.min(4, link.length);
+                        for(var i=0; i<wklen; i++) {
                             //console.log(title[i], link[i]);
                             wikilist.push({link:link[i], title:title[i]});
                         }
+
                         self.wikilist(wikilist);
                         clearTimeout(wikiRequestTimeout);
                     }
