@@ -55,6 +55,7 @@ function initMap() {
         mapTypeId: google.maps.MapTypeId.ROADMAP
     });
     infowindow = new google.maps.InfoWindow();
+    
     ko.applyBindings(new ViewModel());
 }
 
@@ -176,47 +177,23 @@ var ViewModel = function() {
     
     self.getotherapidata = function(location) {
 
-        $('#searchicon').toggleClass('searchicon loading');
-
-        // Search flickr to find photos related to the location
-        
-        var addr = location.data.addr;
-        var result = /,((\s\w*\s?\w+),\s[A-Z]{2})/g.exec(addr);
-
-        var citystate = result[1];
-        var city = result[2];
-        var name = location.data.name;
-        
-        var placefindurl = flickrfindurl + apikey + '&query=' + name + citystate + format;
-        
-        var imglist = [];
-        var cc = 0;
-        console.log(placefindurl);
-        // Search the place_id of the location to narrow photo search results
-        $.getJSON(placefindurl)
-         .done(function (json) {
-
-            if(json.stat != 'ok') {
-                return ;
-            }
-            var pid = json.places.place[0].place_id;
-            var photosearchurl = flickrsearchurl + apikey + '&text=' + name + citystate
-                        + '&place_id=' + pid + '&per_page=6' + format;
+        function resetSlider(imglist, flickrheader) {
+            $('#flexslider').removeData("flexslider");
+            $('.flex-control-nav').remove();
+            $('.flex-direction-nav').remove();
+            $('#slides').html('');
             
-            // Search photos with place_id and name of the place
-            $.getJSON(photosearchurl)
-             .done(function(data) {
-                processPhotoSearch(data);
-             })
-             .error(function() {
-                 resetSlider([], 'Failed to get flickr images');
-             });
-        })
-        .error(function(data) {
-            resetSlider([], 'Failed to get flickr images');
-        });
+            $flickrHeader.text(flickrheader);
+            self.flickrimglist(imglist);
+
+            $('#flexslider').flexslider({ slideshow: false});
+
+            $('#detail-container').show();
+            $('#searchicon').toggleClass('searchicon loading');
+            $('#locations-container').hide();
+        };
         
-        var processPhotoSearch = function(json) {
+        function processPhotoSearch(json) {
 
             if(json.stat != 'ok') {
                 return;
@@ -243,77 +220,107 @@ var ViewModel = function() {
             }
         };
         
-        var processSizes = function(sizes, nn) {
+        function processSizes(sizes, nn) {
 
-                if(sizes.stat!='ok') {
-                    return ;
-                }
+            if(sizes.stat!='ok') {
+                return ;
+            }
                 
-                var imgsizes = sizes.sizes.size;
+            var imgsizes = sizes.sizes.size;
 
-                // find the index of those image with width closest to 500
-                var idx = 0, diff0=1000, diff=0;
-                for(var j=0; j<imgsizes.length; j++) {
-                    if(imgsizes[j].media.toLowerCase() == "photo") {
-                         diff = Math.abs(imgsizes[j].width - 500);
-                        if(diff < diff0) {
-                            diff0 = diff;
-                            idx = j;
-                        }
+            // find the index of those image with width closest to 500
+            var idx = 0, diff0=1000, diff=0;
+            for(var j=0; j<imgsizes.length; j++) {
+                if(imgsizes[j].media.toLowerCase() == "photo") {
+                    diff = Math.abs(imgsizes[j].width - 500);
+                    if(diff < diff0) {
+                        diff0 = diff;
+                        idx = j;
                     }
                 }
+            }
                         
-                cc += 1;
+            cc += 1;
                         
-                // Do not show photos height great than width
-                if(parseInt(imgsizes[idx].width) > (imgsizes[idx].height))
-                    imglist.push(imgsizes[idx].source);
+            // Do not show photos height great than width
+            if(parseInt(imgsizes[idx].width) > (imgsizes[idx].height))
+                imglist.push(imgsizes[idx].source);
 
-                // Update observableArray only after all photos checked
-                if(cc == nn) {
-                    resetSlider(imglist, 'Relevant Flickr Images');
-                }
-            };
-        
-        var resetSlider = function(imglist, flickrheader) {
-            $('#flexslider').removeData("flexslider");
-            $('.flex-control-nav').remove();
-            $('.flex-direction-nav').remove();
-            $('#slides').html('');
-            
-            $flickrHeader.text(flickrheader);
-            self.flickrimglist(imglist);
-
-            $('#flexslider').flexslider({ slideshow: false});
-
-            $('#detail-container').show();
-            $('#searchicon').toggleClass('searchicon loading');
-            $('#locations-container').hide();
+            // Update observableArray only after all photos checked
+            if(cc == nn) {
+                resetSlider(imglist, 'Relevant Flickr Images');
+            }
         };
+               
+        $('#searchicon').toggleClass('searchicon loading');
+
+        // Search flickr to find photos related to the location
         
+        var addr = location.data.addr;
+        var result = /,((\s\w*\s?\w+),\s[A-Z]{2})/g.exec(addr);
+
+        var citystate = result[1];
+        var city = result[2];
+        var name = location.data.name;
+        
+        var imglist = [];
+        var cc = 0;
+
+        searchFlickr();
+        
+        function searchFlickr() {
+            var placefindurl = flickrfindurl + apikey + '&query=' + name + citystate + format;
+        
+            console.log(placefindurl);
+        
+            // Search the place_id of the location to narrow photo search results
+            $.getJSON(placefindurl)
+            .done(function (json) {
+
+                if(json.stat != 'ok') {
+                    resetSlider([], 'Failed to get flickr images');
+                    return ;
+                }
+                var pid = json.places.place[0].place_id;
+                var photosearchurl = flickrsearchurl + apikey + '&text=' + name + citystate
+                        + '&place_id=' + pid + '&per_page=6' + format;
+            
+                // Search photos with place_id and name of the place
+                $.getJSON(photosearchurl)
+                 .done(function(data) {
+                    processPhotoSearch(data);
+                })
+                .error(function() {
+                    resetSlider([], 'Failed to get flickr images');
+                });
+            })
+            .error(function(data) {
+                resetSlider([], 'Failed to get flickr images');
+            });
+        }
+
         var wikiRequestTimeout = setTimeout(function() {
             self.wikilist([]);
             $wikiHeader.text('Failed to get wikipedia resources');
         }, 8000);
-        
-        $wikiHeader.text('Relevant Wikipedia Links');
+
         wikiSearch(name + city);
         
         function wikiSearch(search) {
             var wikiURL = wikisearchurl + search + '&format=json&callback=wikiCallback';
-
+            console.log('xxxx', wikiURL);
+            
             $.ajax({
                 url: wikiURL,
                 dataType: 'jsonp',
                 success: function(data) {
                     // do something with data
+                    console.log(search, data);
                     var title = data[1]
                     var link = data[3];
                     if(link.length == 0) {
                         if(search == name) {
-                            $wikiHeader.text('Relevant Wikipedia Links(None)');
-                            self.wikilist([]);
-                            clearTimeout(wikiRequestTimeout);
+                            resetWiki([], 'Relevant Wikipedia Links(None)');
                         }
                         else {
                             wikiSearch(name);
@@ -327,12 +334,17 @@ var ViewModel = function() {
                             //console.log(title[i], link[i]);
                             wikilist.push({link:link[i], title:title[i]});
                         }
-
-                        self.wikilist(wikilist);
-                        clearTimeout(wikiRequestTimeout);
+ 
+                        resetWiki(wikilist, 'Relevant Wikipedia Links');
                     }
                 }
             });
+        }
+        
+        function resetWiki(wikilist, wikiheader) {
+            $wikiHeader.text(wikiheader);
+            self.wikilist(wikilist);
+            clearTimeout(wikiRequestTimeout);
         }
 	};
 };
