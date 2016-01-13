@@ -56,6 +56,9 @@ function initMap() {
     });
     infowindow = new google.maps.InfoWindow();
     
+    if(!localStorage.neighborMap) {
+        localStorage.neighborMap = JSON.stringify({});
+    }
     ko.applyBindings(new ViewModel());
 }
 
@@ -131,6 +134,8 @@ var showInfoWindow = function(location, self) {
 var ViewModel = function() {
     var self = this;
 
+    var neighborMap = JSON.parse(localStorage.neighborMap);
+    
     var bounds = new google.maps.LatLngBounds();
     var locations = [];//ko.observableArray();
     
@@ -196,6 +201,7 @@ var ViewModel = function() {
         function processPhotoSearch(json) {
 
             if(json.stat != 'ok') {
+                resetSlider([], 'Failed to get flickr images');
                 return;
             }
             
@@ -248,6 +254,13 @@ var ViewModel = function() {
 
             // Update observableArray only after all photos checked
             if(cc == nn) {
+                if(neighborMap[name]) {
+                    neighborMap[name].flickr = imglist;
+                }
+                else {
+                    neighborMap[name] = {'flickr': imglist};
+                }
+                localStorage.neighborMap = JSON.stringify(neighborMap);
                 resetSlider(imglist, 'Relevant Flickr Images');
             }
         };
@@ -262,11 +275,18 @@ var ViewModel = function() {
         var citystate = result[1];
         var city = result[2];
         var name = location.data.name;
+        var savedInfo = neighborMap[name];
         
         var imglist = [];
         var cc = 0;
 
-        searchFlickr();
+        console.log(savedInfo);
+        if(savedInfo && savedInfo['flickr']) {
+            resetSlider(savedInfo['flickr'], 'Relevant Flickr Images' );
+        }
+        else {
+            searchFlickr();
+        }
         
         function searchFlickr() {
             var placefindurl = flickrfindurl + apikey + '&query=' + name + citystate + format;
@@ -304,6 +324,11 @@ var ViewModel = function() {
             $wikiHeader.text('Failed to get wikipedia resources');
         }, 8000);
 
+        if(savedInfo && savedInfo['wiki']) {
+            resetWiki(savedInfo['wiki'], 'Relevant Wikipedia Links');
+            return;
+        }
+        
         wikiSearch(name + city);
         
         function wikiSearch(search) {
@@ -335,6 +360,13 @@ var ViewModel = function() {
                             wikilist.push({link:link[i], title:title[i]});
                         }
  
+                        if(neighborMap[name]) {
+                            neighborMap[name].wiki = wikilist;
+                        }
+                        else {
+                            neighborMap[name] = {'wiki': wikilist};
+                        }
+                        localStorage.neighborMap = JSON.stringify(neighborMap);
                         resetWiki(wikilist, 'Relevant Wikipedia Links');
                     }
                 }
