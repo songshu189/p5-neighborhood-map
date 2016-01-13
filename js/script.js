@@ -337,6 +337,10 @@ var ViewModel = function() {
 	};
 };
 
+function showLocations() {
+    $('#locations-container').toggleClass('show-list');
+}
+
 var flickrfindurl = 'https://api.flickr.com/services/rest/?method=flickr.places.find';
 var flickrsearchurl = 'https://api.flickr.com/services/rest/?method=flickr.photos.search';
 var flickrsizeurl = 'https://api.flickr.com/services/rest/?method=flickr.photos.getSizes';
@@ -345,3 +349,10 @@ var format = '&format=json&nojsoncallback=1';
 var wikisearchurl = 'https://en.wikipedia.org/w/api.php?action=opensearch&search=';
 var $flickrHeader = $('#flickr-header');
 var $wikiHeader = $('#wikipedia-header');
+
+$( "#locations-container" ).mouseleave(function() {
+   console.log('mouse leave');
+   console.log(this);
+   console.log($(this));
+   $(this).removeClass('show-list');
+});

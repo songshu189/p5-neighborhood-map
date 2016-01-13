@@ -50,7 +50,7 @@ button, input, ul, a {
 .menu-hamburger-container {
     position: absolute;
     z-index: 1003;
-    left: 0px;
+    left: -400px;
     top: 0px;
 }
 
@@ -144,6 +144,7 @@ button, input, ul, a {
 }
 
 .locations-container {
+    left: 0px;
     background-color: #fff;
     border-radius: 0 0 2px 2px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.2);
@@ -222,10 +223,24 @@ img {
     max-width: 100%;
 }
 
-/* #### iPhone 4+ Portrait or Landscape #### */
-@media screen and (min-device-width: 320px) and (-webkit-min-device-pixel-ratio: 2){
+@media screen and (max-device-width: 480px){
   /* some CSS here */
   .searchbox-container , .locations-container, .detail-container  {
     width: 320px;
+  }
+  .menu-hamburger-container {
+    left: 0px;
+  }
+  .locations-container {
+      position: absolute;
+      left: -400px;
+  }
+}
+
+.show-list {
+    left: 0px;
+    -webkit-transform: translate(0, 0);
+    transform: translate(0, 0);
+    transition: transform 0.3s ease;
   }
 }
