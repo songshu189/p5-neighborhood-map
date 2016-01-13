@@ -1,53 +1,61 @@
-model = [
-    {name: 'Harvard Squarexxx',
-     addr: '18 Brattle St #352, Cambridge, MA 02138',
-     Lat: 42.373109,
-     Lng: -71.120248,
-     info: 'It is the historic center of Cambridge.'},
-     {name: 'Massachusetts Institute of Technology',
-     addr: '77 Massachusetts Ave, Cambridge, MA 02139',
-     Lat: 42.359254,
-     Lng: -71.093134,
-     info: 'A private research university, modern and postmodern architecture, a living museum of works by noted architects'},
-     {name: 'Union Oyster House',
-     addr: '41 Union St, Boston, MA 02108',
-     Lat: 42.361260,
-     Lng: -71.056880,
-     info: 'Historic eatery serving chowder & other New England seafood standards since 1826.'},
-     {name: 'Fenway Park',
-     addr: '4 Yawkey Way, Boston, MA 02215',
-     Lat: 42.345844,
-     Lng: -71.098782,
-     info: 'Fenway Park is a baseball park Kenmore Square,it has been the home of the Boston Red Sox sincen 1912.'},
-     {name: 'Museum of Science',
-     addr: '1 Science Park, Boston, MA 02114',
-     Lat: 42.367799,
-     Lng: -71.070808,
-     info: 'Exhibits in this extensive science museum encourage learning through hands-on exploration of science and technology.'},
-     {name: 'New England Aquarium',
-     addr: '1 Central Wharf, Boston, MA 02110',
-     Lat: 42.359239,
-     Lng: -71.049189,
-     info: 'A global leader in ocean exploration and marine conservation.'},
-     {name: 'Faneuil Hall',
-     addr: '1 Faneuil Hall Sq, Boston, MA 02109',
-     Lat: 42.360133,
-     Lng: -71.055555,
-     info:'Faneuil Hall Marketplace, one of the nations premier urban marketplaces, is a popular attraction in Boston.'},
-     {name: 'Boston College',
-     addr: '140 Commonwealth Avenue, Chestnut Hill, MA 02467',
-     Lat: 42.340064,
-     Lng: -71.166876,
-     info: "A private Jesuit Catholic research university located in the village of Chestnut Hill, Massachusetts"},
-     {name: 'Museum of Fine Arts',
-     addr: '465 Huntington Ave, Boston, MA 02115',
-     Lat: 42.339457,
-     Lng: -71.094143,
-     info: "Explore one of the most comprehensive museums in the world with art from ancient Egyptian to contemporary"}
-];
-    
+var model = [{
+    name: 'Harvard Square',
+    addr: '18 Brattle St #352, Cambridge, MA 02138',
+    Lat: 42.373109,
+    Lng: -71.120248,
+    info: 'It is the historic center of Cambridge.'
+}, {
+    name: 'Massachusetts Institute of Technology',
+    addr: '77 Massachusetts Ave, Cambridge, MA 02139',
+    Lat: 42.359254,
+    Lng: -71.093134,
+    info: 'A private research university, modern and postmodern architecture, a living museum of works by noted architects'
+}, {
+    name: 'Union Oyster House',
+    addr: '41 Union St, Boston, MA 02108',
+    Lat: 42.361260,
+    Lng: -71.056880,
+    info: 'Historic eatery serving chowder & other New England seafood standards since 1826.'
+}, {
+    name: 'Fenway Park',
+    addr: '4 Yawkey Way, Boston, MA 02215',
+    Lat: 42.345844,
+    Lng: -71.098782,
+    info: 'Fenway Park is a baseball park Kenmore Square,it has been the home of the Boston Red Sox sincen 1912.'
+}, {
+    name: 'Museum of Science',
+    addr: '1 Science Park, Boston, MA 02114',
+    Lat: 42.367799,
+    Lng: -71.070808,
+    info: 'Exhibits in this extensive science museum encourage learning through hands-on exploration of science and technology.'
+}, {
+    name: 'New England Aquarium',
+    addr: '1 Central Wharf, Boston, MA 02110',
+    Lat: 42.359239,
+    Lng: -71.049189,
+    info: 'A global leader in ocean exploration and marine conservation.'
+}, {
+    name: 'Faneuil Hall',
+    addr: '1 Faneuil Hall Sq, Boston, MA 02109',
+    Lat: 42.360133,
+    Lng: -71.055555,
+    info: 'Faneuil Hall Marketplace, one of the nations premier urban marketplaces, is a popular attraction in Boston.'
+}, {
+    name: 'Boston College',
+    addr: '140 Commonwealth Avenue, Chestnut Hill, MA 02467',
+    Lat: 42.340064,
+    Lng: -71.166876,
+    info: "A private Jesuit Catholic research university located in the village of Chestnut Hill, Massachusetts"
+}, {
+    name: 'Museum of Fine Arts',
+    addr: '465 Huntington Ave, Boston, MA 02115',
+    Lat: 42.339457,
+    Lng: -71.094143,
+    info: "Explore one of the most comprehensive museums in the world with art from ancient Egyptian to contemporary"
+}];
+
 var map = null,
-    infowindow = null;
+    infowindow = null,
     markers = [];
 
 function initMap() {
@@ -55,8 +63,8 @@ function initMap() {
         mapTypeId: google.maps.MapTypeId.ROADMAP
     });
     infowindow = new google.maps.InfoWindow();
-    
-    if(!localStorage.neighborMap) {
+
+    if (!localStorage.neighborMap) {
         localStorage.neighborMap = JSON.stringify({});
     }
     ko.applyBindings(new ViewModel());
@@ -64,7 +72,7 @@ function initMap() {
 
 // Hide all markers 
 function clearMarkers() {
-    for(var i=0; i<markers.length; i++) {
+    for (var i=0; i<markers.length; i++) {
         markers[i].setMap(null);
     }
 }
@@ -157,15 +165,13 @@ var ViewModel = function() {
     
     self.showInfoWindow = function(data) {
         showInfoWindow(data, self)();
-    }
+    };
     
     self.resultList = ko.computed(function(){
         var filtered = ko.utils.arrayFilter(locations, function(location){
                 var searchItem = self.searchItem().toLowerCase();
-                //console.log(searchItem);
                 return location.data.name.toLowerCase().indexOf(searchItem) >= 0;
             });
-            //console.log(filtered);
         
         clearMarkers();
         resetMarkers(filtered);
@@ -174,7 +180,7 @@ var ViewModel = function() {
     self.backToList = function() {
         $("#detail-container").hide();
         $('#locations-container').show();
-    }
+    };
     self.flickrimgurl = ko.observable('');
     self.flickrimgsrc = ko.observable('');
     self.wikilist = ko.observableArray();
@@ -196,7 +202,7 @@ var ViewModel = function() {
             $('#detail-container').show();
             $('#searchicon').toggleClass('searchicon loading');
             $('#locations-container').hide();
-        };
+        }
         
         function processPhotoSearch(json) {
 
@@ -210,7 +216,7 @@ var ViewModel = function() {
             
             cc=0;
             for(var i=0; i<photos_len; i++){
-                var sizeurl = flickrsizeurl + apikey + '&photo_id=' + photos[i].id + format;;
+                var sizeurl = flickrsizeurl + apikey + '&photo_id=' + photos[i].id + format;
 
                 // Find the available width and height of related photo
                 $.getJSON(sizeurl)
@@ -224,7 +230,7 @@ var ViewModel = function() {
             if(photos_len==0) {
                 resetSlider([], 'Relevant Flickr Images(None)');
             }
-        };
+        }
         
         function processSizes(sizes, nn) {
 
@@ -263,7 +269,7 @@ var ViewModel = function() {
                 localStorage.neighborMap = JSON.stringify(neighborMap);
                 resetSlider(imglist, 'Relevant Flickr Images');
             }
-        };
+        }
                
         $('#searchicon').toggleClass('searchicon loading');
 
@@ -280,7 +286,6 @@ var ViewModel = function() {
         var imglist = [];
         var cc = 0;
 
-        console.log(savedInfo);
         if(savedInfo && savedInfo['flickr']) {
             resetSlider(savedInfo['flickr'], 'Relevant Flickr Images' );
         }
@@ -290,9 +295,7 @@ var ViewModel = function() {
         
         function searchFlickr() {
             var placefindurl = flickrfindurl + apikey + '&query=' + name + citystate + format;
-        
-            console.log(placefindurl);
-        
+
             // Search the place_id of the location to narrow photo search results
             $.getJSON(placefindurl)
             .done(function (json) {
@@ -302,8 +305,8 @@ var ViewModel = function() {
                     return ;
                 }
                 var pid = json.places.place[0].place_id;
-                var photosearchurl = flickrsearchurl + apikey + '&text=' + name + citystate
-                        + '&place_id=' + pid + '&per_page=6' + format;
+                var photosearchurl = flickrsearchurl + apikey + '&text=' + name + citystate +
+                        '&place_id=' + pid + '&per_page=6' + format;
             
                 // Search photos with place_id and name of the place
                 $.getJSON(photosearchurl)
@@ -333,15 +336,13 @@ var ViewModel = function() {
         
         function wikiSearch(search) {
             var wikiURL = wikisearchurl + search + '&format=json&callback=wikiCallback';
-            console.log('xxxx', wikiURL);
-            
+
             $.ajax({
                 url: wikiURL,
                 dataType: 'jsonp',
                 success: function(data) {
                     // do something with data
-                    console.log(search, data);
-                    var title = data[1]
+                    var title = data[1];
                     var link = data[3];
                     if(link.length == 0) {
                         if(search == name) {
@@ -356,7 +357,6 @@ var ViewModel = function() {
                         var wikilist = [];
                         var wklen = Math.min(4, link.length);
                         for(var i=0; i<wklen; i++) {
-                            //console.log(title[i], link[i]);
                             wikilist.push({link:link[i], title:title[i]});
                         }
  
@@ -395,8 +395,5 @@ var $flickrHeader = $('#flickr-header');
 var $wikiHeader = $('#wikipedia-header');
 
 $( "#locations-container" ).mouseleave(function() {
-   console.log('mouse leave');
-   console.log(this);
-   console.log($(this));
    $(this).removeClass('show-list');
 });
