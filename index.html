@@ -9,7 +9,7 @@
   </head>
 <body>
     <div class="app-container">
-        <div>
+        <div class="info-container">
         <div class="search-container">
             <div class="menu-hamburger-container">
                 <button class="menu-hamburger"  data-bind="click: showLocations"></button>
@@ -32,7 +32,6 @@
             </div>
         </div>
         <div id="detail-container" class="detail-container" style="display:none">
-            <button class="back-button" data-bind="click: backToList">Back to Search Results</button>
             <div id="flexslider" class="flexslider">
                 <h3 id="flickr-header">Relevant Flickr Images</h3>
                 <ul id='slides' class="slides"data-bind="template: { name: 'flex-template', foreach: flickrimglist}">

@@ -200,11 +200,11 @@ var ViewModel = function() {
             $flickrHeader.text(flickrheader);
             self.flickrimglist(imglist);
 
-            $('#flexslider').flexslider({ slideshow: false});
+            $('#flexslider').flexslider({ slideshow: false, controlNav: false});
 
             $('#detail-container').show();
             $('#searchicon').toggleClass('searchicon loading');
-            $('#locations-container').hide();
+            //$('#locations-container').hide();
             lastname = currentname;
         }
         
