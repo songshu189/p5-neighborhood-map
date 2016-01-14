@@ -56,7 +56,9 @@ var model = [{
 
 var map = null,
     infowindow = null,
-    markers = [];
+    markers = [],
+    currentname = '',
+    lastname = '';
 
 function initMap() {
     map = new google.maps.Map(document.getElementById('map'), {
@@ -189,11 +191,12 @@ var ViewModel = function() {
     self.getotherapidata = function(location) {
 
         function resetSlider(imglist, flickrheader) {
-            $('#flexslider').removeData("flexslider");
-            $('.flex-control-nav').remove();
-            $('.flex-direction-nav').remove();
-            $('#slides').html('');
-            
+            if(imglist.length>0 && lastname !== currentname) {
+                $('#flexslider').removeData("flexslider");
+                $('.flex-control-nav').remove();
+                $('.flex-direction-nav').remove();
+                $('#slides').html('');
+            }
             $flickrHeader.text(flickrheader);
             self.flickrimglist(imglist);
 
@@ -202,6 +205,7 @@ var ViewModel = function() {
             $('#detail-container').show();
             $('#searchicon').toggleClass('searchicon loading');
             $('#locations-container').hide();
+            lastname = currentname;
         }
         
         function processPhotoSearch(json) {
@@ -281,11 +285,12 @@ var ViewModel = function() {
         var citystate = result[1];
         var city = result[2];
         var name = location.data.name;
+        currentname = name;
         var savedInfo = neighborMap[name];
         
         var imglist = [];
         var cc = 0;
-
+        console.log(savedInfo);
         if(savedInfo && savedInfo['flickr']) {
             resetSlider(savedInfo['flickr'], 'Relevant Flickr Images' );
         }

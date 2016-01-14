@@ -9,16 +9,14 @@
   </head>
 <body>
     <div class="app-container">
-        <div class="map-container">
-            <div id="map"></div>
-        </div>
+        <div>
         <div class="search-container">
             <div class="menu-hamburger-container">
                 <button class="menu-hamburger"  data-bind="click: showLocations"></button>
             </div>
-            <div class="searchbox-container"> 
+            <div class="searchbox-container">
                 <form onsubmit="return false;"> 
-                    <input class="searchbox" data-bind="textInput: searchItem" autofocus>
+                    <input class="searchbox" data-bind="textInput: searchItem" placeholder="Search here" autofocus>
                 </form>
                 <div id="searchicon-container" class="searchicon-container">
                     <button id="searchicon" class="searchicon"></button>
@@ -49,7 +47,9 @@
                 </ul>
             </div>
         </div>
-        <div class="menu-container">
+        </div>
+        <div class="map-container">
+            <div id="map"></div>
         </div>
     </div>
     <div id="marker-info" data-bind="with: currentLocation" style="display:none">
