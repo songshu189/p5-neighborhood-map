@@ -31,6 +31,7 @@ button, input, ul, a {
 
 .info-container {
     width: 25%;
+    min-width: 300px;
     overflow: hidden;
     display: -webkit-flex;
     display: flex;
@@ -164,8 +165,7 @@ button, input, ul, a {
 
 .location-item {
     line-height: 20px;
-    padding-top: 3px;
-    padding-bottom: 4px;
+    padding: 3px 16px 4px;
     border-top: 1px solid #e6e6e6;
     font-size: 13px;
     cursor: default;
@@ -174,14 +174,6 @@ button, input, ul, a {
 .location-item:hover {
     background-color: #f2f2f2;
     cursor: pointer
-}
-
-.location-icon {
-    float: left;
-    margin: 0 24px 0 16px;
-    background: no-repeat url(https://maps.gstatic.com/tactile/icons/suggest-23551db415748eac4b8508fe3b93d991.png) 0 -156px;
-    height: 24px;
-    width: 24px;
 }
 
 .location {
