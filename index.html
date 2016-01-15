@@ -31,14 +31,17 @@
                 </ul>
             </div>
         </div>
-        <div id="detail-container" class="detail-container" style="display:none">
+        <div id="detail-container" class="detail-container scrollable-y" style="display:none">
+            <div data-bind="with: currentLocation">
+                <h3 data-bind="text: data.name"></h3>
+            </div>
             <div id="flexslider" class="flexslider">
-                <h3 id="flickr-header">Relevant Flickr Images</h3>
+                <h4 id="flickr-header">Relevant Flickr Images</h4>
                 <ul id='slides' class="slides"data-bind="template: { name: 'flex-template', foreach: flickrimglist}">
                 </ul>
             </div>
             <div class="wiki-list">
-                <h3 id="wikipedia-header">Relevant Wikipedia Links</h3>
+                <h4 id="wikipedia-header">Relevant Wikipedia Links</h4>
                 <ul data-bind="foreach: wikilist()">
                     <li class="location-item">
                         <a target="_blank" data-bind="attr:{ href: link }, text: title" ></a>

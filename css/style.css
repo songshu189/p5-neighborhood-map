@@ -25,11 +25,17 @@ button, input, ul, a {
     left: 0;
     width: 100%;
     height: 100%;
+    display: -webkit-flex;
     display: flex;
 }
+
 .info-container {
     width: 25%;
     overflow: hidden;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-direction: column;
+    flex-direction: column;
 }
 
 .map-container {
@@ -189,10 +195,17 @@ button, input, ul, a {
 }
 
 .detail-container {
-    margin: 8px;
+    padding: 6px;
     background: #fff;
     z-index: 2;
     opacity: 0.9;
+    -webkit-flex: auto; /* Safari 6.1+ */
+    -ms-flex: auto; /* IE 10 */
+    flex: auto;
+}
+
+#flickr-header {
+    margin-top: 0px;
 }
 
 .back-button {
@@ -215,6 +228,31 @@ button, input, ul, a {
 }
 .wiki-item {
 
+}
+.scrollable-x,.scrollable-y {
+    outline-offset: -2px;
+    overflow-x: hidden;
+    overflow-y: hidden
+}
+ 
+ .scrollable-y.scrollable-show,.scrollable-y:focus,.scrollable-y:hover,.scrollable-show-all .scrollabl-y{overflow-y:scroll}
+ 
+ .scrollable-x.scrollable-show,.scrollable-x:focus,.scrollable-x:hover,.scrollable-show-all .scrollable-x{overflow-x:auto}
+ 
+ .scrollable-x::-webkit-scrollbar-track,
+ .scrollable-y::-webkit-scrollbar-track {
+    background-color:#f0f0f0
+ }
+ 
+.scrollable-x::-webkit-scrollbar,
+.scrollable-y::-webkit-scrollbar {
+    width: 6px;
+}
+    
+ 
+.scrollable-x::-webkit-scrollbar-thumb,
+.scrollable-y::-webkit-scrollbar-thumb {
+    background-color:#888
 }
 
 img {
