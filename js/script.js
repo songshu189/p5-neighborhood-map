@@ -388,6 +388,7 @@ var ViewModel = function() {
 
 function showLocations() {
     $('#locations-container').toggleClass('show-list');
+    //$('#detail-container').toggleClass('show-detail');
 }
 
 var flickrfindurl = 'https://api.flickr.com/services/rest/?method=flickr.places.find';

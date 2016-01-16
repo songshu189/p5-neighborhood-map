@@ -31,7 +31,6 @@ button, input, ul, a {
 
 .info-container {
     width: 25%;
-    min-width: 300px;
     overflow: hidden;
     display: -webkit-flex;
     display: flex;
@@ -41,7 +40,7 @@ button, input, ul, a {
 
 .map-container {
     position: absolute;
-    top: 0;
+    top: 0px;
     bottom: 0;
     width: 75%;
     z-index: 0;
@@ -256,6 +255,108 @@ img {
     margin: 0;
 }
 
+@media screen and (orientation: portrait) {
+    .app-container {
+        display: block;
+    }
+    
+    .info-container {
+        width: 100%;
+        height: 30%;
+        -webkit-flex-direction: row; /* Safari 6.1+ */
+        flex-direction: row;
+    }
+    
+    .map-container {
+        position: relative;
+        width: 100%;
+        height: 70%;
+    }
+    .search-container {
+        width: 45%;
+    }
+    
+    .detail-container {
+        width: 55%;
+    }
+}
+
+@media screen and (max-device-width: 480px) and (orientation: portrait) {
+
+}
+
+@media screen and (max-device-width: 1028px) and (orientation: landscape) {
+    .location-item {
+        line-height: 16px;
+        padding: 3px 12px 3px;
+        font-size: 10px;
+    }
+    h2 {
+        font-size: 1.2em;
+        -webkit-margin-before: 0.7em;
+        -webkit-margin-after: 0.5em;
+    }
+    h3 {
+        font-size: 1em;
+        -webkit-margin-before: 0.6em;
+        -webkit-margin-after: 0.5em;
+    }
+    h4 {
+        font-size: 0.8em;
+        -webkit-margin-before: 0.5em;
+        -webkit-margin-after: 0.4em;
+    }
+    .searchbox-container {
+        height: 40px;
+        padding: 8px 56px 7px 56px;
+    }
+    
+    .searchbox {
+        font-size: 12px;
+        height: 20px !important;
+        line-height: 20px;
+    }
+    
+    .infodiv {
+        width: 250px;
+        text-align: justify;
+        text-justify: inter-word;
+    }
+
+}
+@media screen and (max-device-width: 800px) and (orientation: landscape) {
+    .app-container {
+        display: block;
+    }
+    
+    .info-container {
+        margin: 6px;
+        width: 200px;
+    }
+    
+    .map-container {
+        width: 100%;
+    }
+    
+    .locations-container {
+        position: absolute;
+        width: 200px;
+        max-width: 200px;
+        left: -400px;
+    }
+    
+    .detail-container {
+        position: absolute;
+        width: 200px;
+        max-width: 200px;
+        left: -400px;
+    }
+    
+    .menu-hamburger-container {
+        left: 0px;
+    }
+}
+
 @media screen and (max-device-width: 480px){
   /* some CSS here */
   .searchbox-container , .locations-container, .detail-container  {
@@ -275,5 +376,10 @@ img {
     -webkit-transform: translate(0, 0);
     transform: translate(0, 0);
     transition: transform 0.3s ease;
-  }
+}
+.show-detail {
+    left: 0px;
+    -webkit-transform: translate(0, 0);
+    transform: translate(0, 0);
+    transition: transform 0.3s ease;
 }
