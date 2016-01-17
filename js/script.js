@@ -185,7 +185,7 @@ var ViewModel = function() {
     self.flickrimgsrc = ko.observable('');
     self.wikilist = ko.observableArray();
     self.flickrimglist = ko.observableArray();
-    
+
     self.getotherapidata = function(location) {
 
         function resetSlider(imglist, flickrheader) {
@@ -202,6 +202,7 @@ var ViewModel = function() {
 
             $('#searchicon').toggleClass('searchicon loading');
             if(firstclick) {
+                if($('#locations-container').is(':hidden')) $('#locations-container').show();
                 $('#detail-container').show();
                 firstclick = false;
             }
@@ -389,7 +390,9 @@ var ViewModel = function() {
 function showLocations() {
     //$('#locations-container').toggleClass('show-list');
     $('#locations-container').toggle();
-    $('#detail-container').toggle();
+    if(firstclick==false) {
+        $('#detail-container').toggle();
+    }
     //$('#detail-container').toggleClass('show-detail');
 }
 
