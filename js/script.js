@@ -57,6 +57,7 @@ var model = [{
 var map = null,
     infowindow = null,
     markers = [],
+    firstclick = true;
     currentname = '',
     lastname = '';
 
@@ -179,10 +180,7 @@ var ViewModel = function() {
         resetMarkers(filtered);
         return filtered;
     });
-    self.backToList = function() {
-        $("#detail-container").hide();
-        $('#locations-container').show();
-    };
+
     self.flickrimgurl = ko.observable('');
     self.flickrimgsrc = ko.observable('');
     self.wikilist = ko.observableArray();
@@ -202,9 +200,11 @@ var ViewModel = function() {
 
             $('#flexslider').flexslider({ slideshow: false, controlNav: false});
 
-            $('#detail-container').show();
             $('#searchicon').toggleClass('searchicon loading');
-            //$('#locations-container').hide();
+            if(firstclick) {
+                $('#detail-container').show();
+                firstclick = false;
+            }
             lastname = currentname;
         }
         
@@ -387,7 +387,9 @@ var ViewModel = function() {
 };
 
 function showLocations() {
-    $('#locations-container').toggleClass('show-list');
+    //$('#locations-container').toggleClass('show-list');
+    $('#locations-container').toggle();
+    $('#detail-container').toggle();
     //$('#detail-container').toggleClass('show-detail');
 }
 

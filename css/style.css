@@ -159,7 +159,6 @@ button, input, ul, a {
     border-radius: 0 0 2px 2px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.2);
     font-size: 13px;
-    overflow: hidden;
 }
 
 .location-item {
@@ -197,21 +196,6 @@ button, input, ul, a {
 
 #flickr-header {
     margin-top: 0px;
-}
-
-.back-button {
-    background-color: #fff;
-    border-radius: 0 0 2px 2px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-    box-sizing: border-box;
-    font-size: 13px;
-    padding: 8px 20px;
-    width: 100%;
-    z-index: 5;
-    text-align: left;
-    text-decoration: underline;
-    color: #4285F4;
-    cursor: pointer;
 }
 
 .wiki-list {
@@ -307,8 +291,8 @@ img {
         -webkit-margin-after: 0.4em;
     }
     .searchbox-container {
-        height: 40px;
-        padding: 8px 56px 7px 56px;
+        height: 44px;
+        padding: 10px 56px 9px 56px;
     }
     
     .searchbox {
@@ -330,8 +314,8 @@ img {
     }
     
     .info-container {
-        margin: 6px;
-        width: 200px;
+        width: 210px;
+        height: 100%;
     }
     
     .map-container {
@@ -339,17 +323,13 @@ img {
     }
     
     .locations-container {
-        position: absolute;
-        width: 200px;
-        max-width: 200px;
-        left: -400px;
+        display: none;
+        max-width: 210px;
     }
     
     .detail-container {
-        position: absolute;
-        width: 200px;
-        max-width: 200px;
-        left: -400px;
+        display: none;
+        max-width: 210px;
     }
     
     .menu-hamburger-container {
