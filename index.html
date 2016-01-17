@@ -24,7 +24,7 @@
             </div>
             <div id="locations-container" class="locations-container">
                 <ul data-bind="foreach: resultList()">
-                    <li class="location-item" data-bind="click: $parent.showInfoWindow">
+                    <li class="list-item" data-bind="click: $parent.showInfoWindow">
                         <span class="location" data-bind="text: data.name"></span> 
                     </li>
                 </ul>
@@ -42,7 +42,7 @@
             <div class="wiki-list">
                 <h4 id="wikipedia-header">Relevant Wikipedia Links</h4>
                 <ul data-bind="foreach: wikilist()">
-                    <li class="location-item">
+                    <li class="list-item">
                         <a target="_blank" data-bind="attr:{ href: link }, text: title" ></a>
                     </li>
                 </ul>

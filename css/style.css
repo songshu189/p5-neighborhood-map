@@ -161,7 +161,8 @@ button, input, ul, a {
     font-size: 13px;
 }
 
-.location-item {
+.list-item {
+    height: 20px;
     line-height: 20px;
     padding: 3px 16px 4px;
     border-top: 1px solid #e6e6e6;
@@ -169,7 +170,7 @@ button, input, ul, a {
     cursor: default;
 }
 
-.location-item:hover {
+.list-item:hover {
     background-color: #f2f2f2;
     cursor: pointer
 }
@@ -201,9 +202,7 @@ button, input, ul, a {
 .wiki-list {
     border: 4px solid #ffffff; 
 }
-.wiki-item {
 
-}
 .scrollable-x,.scrollable-y {
     outline-offset: -2px;
     overflow-x: hidden;
@@ -270,7 +269,8 @@ img {
 }
 
 @media screen and (max-device-width: 1028px) and (orientation: landscape) {
-    .location-item {
+    .list-item {
+        height: 16px;
         line-height: 16px;
         padding: 3px 12px 3px;
         font-size: 10px;
