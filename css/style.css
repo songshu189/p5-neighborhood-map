@@ -202,28 +202,25 @@ button, input, ul, a {
     border: 4px solid #ffffff; 
 }
 
-.scrollable-x,.scrollable-y {
+.scrollable-y {
     outline-offset: -2px;
     overflow-x: hidden;
-    overflow-y: hidden
+    overflow-y: hidden;
 }
- 
- .scrollable-y.scrollable-show,.scrollable-y:focus,.scrollable-y:hover,.scrollable-show-all .scrollabl-y{overflow-y:scroll}
- 
- .scrollable-x.scrollable-show,.scrollable-x:focus,.scrollable-x:hover,.scrollable-show-all .scrollable-x{overflow-x:auto}
- 
- .scrollable-x::-webkit-scrollbar-track,
- .scrollable-y::-webkit-scrollbar-track {
-    background-color:#f0f0f0
- }
- 
-.scrollable-x::-webkit-scrollbar,
+
+.scrollable-y:focus,
+.scrollable-y:hover {
+    overflow-y: scroll;
+}
+
+.scrollable-y::-webkit-scrollbar-track {
+    background-color:#f0f0f0;
+}
+
 .scrollable-y::-webkit-scrollbar {
     width: 6px;
 }
-    
- 
-.scrollable-x::-webkit-scrollbar-thumb,
+
 .scrollable-y::-webkit-scrollbar-thumb {
     background-color:#888
 }
@@ -237,6 +234,7 @@ img {
     margin: 0;
 }
 
+/* for portrait, list views on top */
 @media screen and (min-device-height: 1000px) and (orientation: portrait) {
     .app-container {
         display: block;
@@ -254,6 +252,7 @@ img {
         width: 100%;
         height: 70%;
     }
+    
     .search-container {
         width: 45%;
     }
@@ -263,6 +262,7 @@ img {
     }
 }
 
+/* for portrait, list views on top */
 @media screen and (min-device-width: 480px) and (min-device-height: 600px) and (orientation: portrait) {
     .app-container {
         display: block;
@@ -328,6 +328,7 @@ img {
 
 }
 
+/* for landscape or portrait, list views float on left */
 @media screen and (min-device-width: 700px) and (max-device-width: 800px) and (orientation: landscape),
 screen and (max-device-width: 480px) and (orientation: portrait) {
     .app-container {
@@ -358,6 +359,7 @@ screen and (max-device-width: 480px) and (orientation: portrait) {
     }
 }
 
+/* for landscape, list views float on top */
 @media screen and (max-device-width: 700px) and (orientation: landscape) {
     .app-container {
         display: block;
