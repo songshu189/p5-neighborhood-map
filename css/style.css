@@ -1,0 +1,395 @@
+html, body {
+    font-family: Roboto, Arial, sans-serif;
+}
+
+html, body {
+    height: 100%; 
+    margin: 0; 
+    padding: 0; 
+}
+
+button, input, ul, a {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    outline: 0;
+    font: inherit;
+    vertical-align: baseline;
+    background: transparent;
+    list-style: none;
+}
+
+.app-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: -webkit-flex;
+    display: flex;
+}
+
+.info-container {
+    width: 25%;
+    overflow: hidden;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-direction: column;
+    flex-direction: column;
+}
+
+.map-container {
+    position: absolute;
+    top: 0px;
+    bottom: 0;
+    width: 75%;
+    z-index: 0;
+}
+
+#map { 
+    height: 100%; 
+    width: 100%;
+}
+
+.search-container{
+    width: 100%;
+    top: 0;
+    z-index: 4;
+}
+
+.menu-hamburger-container {
+    position: absolute;
+    z-index: 1003;
+    left: -400px;
+    top: 0px;
+}
+
+.menu-hamburger {
+    display: block;
+    cursor: pointer;
+    padding: 12px 16px;
+}
+
+.menu-hamburger::before {
+    content: '';
+    display: block;
+    background-image: url(https:///maps.gstatic.com/tactile/omnibox/quantum_menu-v2-1x.png);
+    background-size: 48px 24px;
+    background-position: 0 0;
+    height: 24px;
+    width: 24px;
+    opacity: .62;
+}
+
+.searchbox-container {
+    position: relative;
+    background: #fff;
+    border-radius: 2px;
+    box-sizing: border-box;
+    width: 100%;
+    height: 48px;
+    border-bottom: 1px solid transparent;
+    padding: 12px 64px 11px 64px;
+    z-index: 108;
+}
+
+.searchbox {
+    font-size: 15px;
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100%;
+    height: 24px !important;
+    line-height: 24px;
+}
+
+.searchicon-container  {
+    position: absolute;
+    right: 0px;
+    top: 0px;
+}
+
+.searchicon  {
+    display: block;
+    padding: 12px 15px;
+}
+
+.searchicon::before {
+    content: '';
+    display: block;
+    width: 24px;
+    height: 24px;
+    background: url(https:///maps.gstatic.com/tactile/omnibox/quantum_search_button-20150825-1x.png);
+    background-size: 72px 24px;
+}
+
+.loading {
+    background-color: rgba(0,0,0,0);
+    border: 4px solid rgba(38,152,180,0.9);
+    opacity: .9;
+    border-top: 4px solid rgba(0,0,0,0);
+    border-left: 4px solid rgba(0,0,0,0);
+    border-radius: 24px;
+    width: 24px;
+    height: 24px;
+    margin: 10px;
+    -moz-animation: spin .6s infinite linear;
+    -webkit-animation: spin .6s infinite linear;
+}
+
+@-moz-keyframes spin {
+    0% { -moz-transform: rotate(0deg);}
+    100% { -moz-transform: rotate(360deg); }
+}
+
+/* Chrome, Safari, Opera */
+@-webkit-keyframes spin {
+    0% { -webkit-transform: rotate(0deg); }
+    100% { -webkit-transform: rotate(360deg); };
+}
+
+/* Standard syntax */
+@keyframes spin {
+      0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); };
+}
+
+.locations-container {
+    left: 0px;
+    background-color: #fff;
+    border-radius: 0 0 2px 2px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    font-size: 13px;
+}
+
+.list-item {
+    line-height: 20px;
+    padding: 3px 16px 4px;
+    border-top: 1px solid #e6e6e6;
+    font-size: 13px;
+    cursor: default;
+}
+
+.list-item:hover {
+    background-color: #f2f2f2;
+    cursor: pointer
+}
+
+.location {
+    color: #333;
+}
+
+.infodiv {
+    width: 360px;
+    text-align: justify;
+    text-justify: inter-word;
+}
+
+.detail-container {
+    padding: 6px;
+    background: #fff;
+    z-index: 2;
+    opacity: 0.9;
+    -webkit-flex: auto; /* Safari 6.1+ */
+    -ms-flex: auto; /* IE 10 */
+    flex: auto;
+}
+
+#flickr-header {
+    margin-top: 0px;
+}
+
+.wiki-list {
+    border: 4px solid #ffffff; 
+}
+
+.scrollable-y {
+    outline-offset: -2px;
+    overflow-x: hidden;
+    overflow-y: hidden;
+}
+
+.scrollable-y:focus,
+.scrollable-y:hover {
+    overflow-y: scroll;
+}
+
+.scrollable-y::-webkit-scrollbar-track {
+    background-color:#f0f0f0;
+}
+
+.scrollable-y::-webkit-scrollbar {
+    width: 6px;
+}
+
+.scrollable-y::-webkit-scrollbar-thumb {
+    background-color:#888
+}
+
+img {
+    width: 100%;
+    max-width: 100%;
+}
+
+.flexslider {
+    margin: 0;
+}
+
+/* for portrait, list views on top */
+@media screen and (min-device-height: 1000px) and (orientation: portrait) {
+    .app-container {
+        display: block;
+    }
+    
+    .info-container {
+        width: 100%;
+        height: 30%;
+        -webkit-flex-direction: row; /* Safari 6.1+ */
+        flex-direction: row;
+    }
+    
+    .map-container {
+        position: relative;
+        width: 100%;
+        height: 70%;
+    }
+    
+    .search-container {
+        width: 45%;
+    }
+    
+    .detail-container {
+        width: 55%;
+    }
+}
+
+/* for portrait, list views on top */
+@media screen and (min-device-width: 480px) and (min-device-height: 600px) and (orientation: portrait) {
+    .app-container {
+        display: block;
+    }
+    
+    .info-container {
+        width: 100%;
+        height: 40%;
+        -webkit-flex-direction: row; /* Safari 6.1+ */
+        flex-direction: row;
+    }
+    
+    .map-container {
+        position: relative;
+        width: 100%;
+        height: 60%;
+    }
+    .search-container {
+        width: 45%;
+    }
+    
+    .detail-container {
+        width: 55%;
+    }
+}
+
+@media screen and (max-device-width: 1028px) and (orientation: landscape),
+ screen and (max-device-height: 1028px) and (orientation: portrait) {
+    .list-item {
+        line-height: 16px;
+        padding: 3px 12px 3px;
+        font-size: 10px;
+    }
+    h2 {
+        font-size: 1.2em;
+        -webkit-margin-before: 0.7em;
+        -webkit-margin-after: 0.5em;
+    }
+    h3 {
+        font-size: 1em;
+        -webkit-margin-before: 0.6em;
+        -webkit-margin-after: 0.5em;
+    }
+    h4 {
+        font-size: 0.8em;
+        -webkit-margin-before: 0.5em;
+        -webkit-margin-after: 0.4em;
+    }
+    .searchbox-container {
+        height: 44px;
+        padding: 10px 56px 9px 56px;
+    }
+    
+    .searchbox {
+        font-size: 12px;
+        height: 20px !important;
+        line-height: 20px;
+    }
+    
+    .infodiv {
+        width: 250px;
+    }
+
+}
+
+/* for landscape or portrait, list views float on left */
+@media screen and (min-device-width: 700px) and (max-device-width: 800px) and (orientation: landscape),
+screen and (max-device-width: 480px) and (orientation: portrait) {
+    .app-container {
+        display: block;
+    }
+    
+    .info-container {
+        width: 210px;
+        height: 100%;
+    }
+    
+    .map-container {
+        width: 100%;
+    }
+    
+    .locations-container {
+        display: none;
+        max-width: 210px;
+    }
+    
+    .detail-container {
+        display: none;
+        max-width: 210px;
+    }
+    
+    .menu-hamburger-container {
+        left: 0px;
+    }
+}
+
+/* for landscape, list views float on top */
+@media screen and (max-device-width: 700px) and (orientation: landscape) {
+    .app-container {
+        display: block;
+    }
+    
+    .info-container {
+        width: 100%;
+        height: 250px;
+        -webkit-flex-direction: row; /* Safari 6.1+ */
+        flex-direction: row;
+    }
+    
+    .map-container {
+        width: 100%;
+        height: 100%;
+    }
+    .search-container {
+        width: 45%;
+    }
+
+    .locations-container {
+        display: none;
+    }
+    
+    .detail-container {
+        display: none;
+        width: 55%;
+    }
+    
+    .menu-hamburger-container {
+        left: 0px;
+    }
+}

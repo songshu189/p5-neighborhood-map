@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+    <title>Neighborhood Map</title>
+    <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="css/flexslider.css" type="text/css">
+    <link rel="stylesheet" type="text/css" href="css/style.css" />
+  </head>
+<body>
+    <div class="app-container">
+        <div class="info-container">
+        <div class="search-container">
+            <div class="menu-hamburger-container">
+                <button class="menu-hamburger"  data-bind="click: showLocations"></button>
+            </div>
+            <div class="searchbox-container">
+                <form onsubmit="return false;"> 
+                    <input class="searchbox" data-bind="textInput: searchItem" placeholder="Search here" autofocus>
+                </form>
+                <div id="searchicon-container" class="searchicon-container">
+                    <button id="searchicon" class="searchicon"></button>
+                </div>
+            </div>
+            <div id="locations-container" class="locations-container">
+                <ul data-bind="foreach: resultList()">
+                    <li class="list-item" data-bind="click: $parent.showInfoWindow">
+                        <span class="location" data-bind="text: data.name"></span> 
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div id="detail-container" class="detail-container scrollable-y" style="display: none;">
+            <div data-bind="with: currentLocation">
+                <h3 data-bind="text: data.name"></h3>
+            </div>
+            <div id="flexslider" class="flexslider">
+                <h4 id="flickr-header">Relevant Flickr Images</h4>
+                <ul id='slides' class="slides"data-bind="template: { name: 'flex-template', foreach: flickrimglist}">
+                </ul>
+            </div>
+            <div class="wiki-list">
+                <h4 id="wikipedia-header">Relevant Wikipedia Links</h4>
+                <ul data-bind="foreach: wikilist()">
+                    <li class="list-item">
+                        <a target="_blank" data-bind="attr:{ href: link }, text: title" ></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        </div>
+        <div class="map-container">
+            <div id="map"></div>
+        </div>
+    </div>
+    <div id="marker-info" data-bind="with: currentLocation" style="display:none">
+        <h2 data-bind="text: data.name"></h2>
+        <div class="infodiv" data-bind="text: data.info"></div>
+    </div>
+    
+    <script type="text/html" id="flex-template">
+        <li>
+            <img data-bind="attr: {src: $data}"/>
+        </li>
+    </script>
+    <!-- jQuery -->
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<script src="js/libs/jquery.min.js">\x3C/script>')</script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.0/knockout-min.js"></script>
+    <!--<script src="js/libs/jquery.min.js"></script>
+    <script src="js/libs/knockout-3.4.0.js"></script>-->
+    <script src="js/libs/jquery.flexslider-min.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?&callback=initMap" async defer></script>
+    <script src="js/script.js"></script>   
+  </body>
+</html>
