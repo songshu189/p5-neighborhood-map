@@ -196,10 +196,10 @@ var ViewModel = function() {
 
             $('#flexslider').flexslider({ slideshow: false, controlNav: false});
 
-            $('#searchicon').toggleClass('searchicon loading');
+            $searchIcon.toggleClass('searchicon loading');
             if(firstclick) {
-                if($('#locations-container').is(':hidden')) $('#locations-container').show();
-                $('#detail-container').show();
+                if($locationsContainer.is(':hidden')) $locationsContainer.show();
+                $detailContainer.show().css('-webkit-overflow-scrolling', 'touch');
                 firstclick = false;
             }
             lastname = currentname;
@@ -275,7 +275,7 @@ var ViewModel = function() {
             }
         }
                
-        $('#searchicon').toggleClass('searchicon loading');
+        $searchIcon.toggleClass('searchicon loading');
 
         // Search flickr to find photos related to the location
         
@@ -393,9 +393,9 @@ var ViewModel = function() {
 };
 
 function showLocations() {
-    $('#locations-container').toggle();
+    $locationsContainer.toggle();
     if(firstclick==false) {
-        $('#detail-container').toggle();
+        $detailContainer.toggle();
     }
 }
 
@@ -405,9 +405,8 @@ var flickrsizeurl = 'https://api.flickr.com/services/rest/?method=flickr.photos.
 var apikey = '&api_key=b6fdb508d51ea1e2f7fab29e76cb6fc1';
 var format = '&format=json&nojsoncallback=1';
 var wikisearchurl = 'https://en.wikipedia.org/w/api.php?action=opensearch&search=';
-var $flickrHeader = $('#flickr-header');
-var $wikiHeader = $('#wikipedia-header');
-
-$( "#locations-container" ).mouseleave(function() {
-   $(this).removeClass('show-list');
-});
+var $flickrHeader = $('#flickr-header'),
+    $wikiHeader = $('#wikipedia-header'),
+    $searchIcon = $('#searchicon'),
+    $detailContainer = $('#detail-container'),
+    $locationsContainer = $("#locations-container");

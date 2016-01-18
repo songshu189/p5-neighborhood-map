@@ -185,7 +185,7 @@ button, input, ul, a {
 }
 
 .detail-container {
-    padding: 6px;
+    padding: 6px 8px;
     background: #fff;
     z-index: 2;
     opacity: 0.9;
@@ -211,6 +211,7 @@ button, input, ul, a {
 .scrollable-y:focus,
 .scrollable-y:hover {
     overflow-y: scroll;
+    -webkit-overflow-scrolling: touch;
 }
 
 .scrollable-y::-webkit-scrollbar-track {
@@ -218,7 +219,7 @@ button, input, ul, a {
 }
 
 .scrollable-y::-webkit-scrollbar {
-    width: 6px;
+    width: 8px;
 }
 
 .scrollable-y::-webkit-scrollbar-thumb {
