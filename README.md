@@ -1,6 +1,6 @@
 ## Front end nano degree neighbourhood map project
 
-This project is for udacity front-end nano-degree web developer. It's a neighborhood map of Boston MA, with some interest locations, you can search to filter locations or click marker or list item to show interested location's related flickr photos and wikipedia links. It's github page is [here](https://github.com/songshu189/p5-neighborhood-map/).
+This project is for udacity front-end nano-degree web developer. It's a neighborhood map of Boston MA, with some interested locations, you can search to filter locations or click marker or list item to show interested location's related flickr photos and wikipedia links. It's github page is [here](http://songshu189.github.io/p5-neighborhood-map/).
 
 ### Project implementation introduction
 
@@ -40,5 +40,5 @@ The repository contains css, and js folders, as well as an index.html and a READ
 5. [Knockout loses bindings when Google Maps API v3 info window is close](http://stackoverflow.com/questions/15317796/knockout-loses-bindings-when-google-maps-api-v3-info-window-is-closed)
 6. [CSS3 Loading Animation Loop](http://www.alessioatzeni.com/blog/css3-loading-animation-loop/)
 7. [Make div's vertically fit inside parent div, with a scrollbar on one](http://stackoverflow.com/questions/28685362/make-divs-vertically-fit-inside-parent-div-with-a-scrollbar-on-one)
-8. [Smoothing out <div> scrolling in Mobile WebKit Browsers](http://weblog.west-wind.com/posts/2013/Jun/01/Smoothing-out-div-scrolling-in-Mobile-WebKit-Browsers)
+8. [Smoothing out div scrolling in Mobile WebKit Browsers](http://weblog.west-wind.com/posts/2013/Jun/01/Smoothing-out-div-scrolling-in-Mobile-WebKit-Browsers)
 9. [Click function for :hover states on touch devices](https://css-tricks.com/forums/topic/click-function-for-hover-states-on-touch-devices/)

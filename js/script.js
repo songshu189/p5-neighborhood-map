@@ -57,7 +57,7 @@ var model = [{
 var map = null,
     infowindow = null,
     markers = [],
-    firstclick = true;
+    firstclick = true,
     currentname = '',
     lastname = '';
 
@@ -229,7 +229,7 @@ var ViewModel = function() {
                  });
             }
             
-            if(photos_len==0) {
+            if(photos_len===0) {
                 resetSlider([], 'Relevant Flickr Images(None)');
             }
         }
@@ -355,8 +355,8 @@ var ViewModel = function() {
                     // do something with data
                     var title = data[1];
                     var link = data[3];
-                    if(link.length == 0) {
-                        if(search == name) {
+                    if(link.length === 0) {
+                        if(search === name) {
                             resetWiki([], 'Relevant Wikipedia Links(None)');
                         }
                         else {
