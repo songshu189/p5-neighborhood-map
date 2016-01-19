@@ -113,10 +113,10 @@ var showInfoWindow = function(location, self) {
         location.marker.setAnimation(google.maps.Animation.BOUNCE);
         setTimeout(function () {
             location.marker.setAnimation(null);
-            }, 700); // current maps duration of one bounce (v3.13)
+            }, 800); // current maps duration of one bounce (v3.13)
         
         // Set the infowindow content
-        infowindow.setContent($('#marker-info').html());
+        infowindow.setContent($markerInfo.html());
         infowindow.open(map, location.marker);
     };
 };
@@ -409,4 +409,5 @@ var $flickrHeader = $('#flickr-header'),
     $wikiHeader = $('#wikipedia-header'),
     $searchIcon = $('#searchicon'),
     $detailContainer = $('#detail-container'),
-    $locationsContainer = $("#locations-container");
+    $locationsContainer = $("#locations-container"),
+    $markerInfo = $('#marker-info');
