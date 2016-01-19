@@ -3,54 +3,63 @@ var model = [{
     addr: '18 Brattle St #352, Cambridge, MA 02138',
     Lat: 42.373109,
     Lng: -71.120248,
+    type: 'square',
     info: 'It is the historic center of Cambridge.'
 }, {
     name: 'Massachusetts Institute of Technology',
     addr: '77 Massachusetts Ave, Cambridge, MA 02139',
     Lat: 42.359254,
     Lng: -71.093134,
+    type: 'university',
     info: 'A private research university, modern and postmodern architecture, a living museum of works by noted architects'
 }, {
     name: 'Union Oyster House',
     addr: '41 Union St, Boston, MA 02108',
     Lat: 42.361260,
     Lng: -71.056880,
+    type: 'restaurant',
     info: 'Historic eatery serving chowder & other New England seafood standards since 1826.'
 }, {
     name: 'Fenway Park',
     addr: '4 Yawkey Way, Boston, MA 02215',
     Lat: 42.345844,
     Lng: -71.098782,
+    type: 'baseball',
     info: 'Fenway Park is a baseball park Kenmore Square,it has been the home of the Boston Red Sox sincen 1912.'
 }, {
     name: 'Museum of Science',
     addr: '1 Science Park, Boston, MA 02114',
     Lat: 42.367799,
     Lng: -71.070808,
+    type: null,
     info: 'Exhibits in this extensive science museum encourage learning through hands-on exploration of science and technology.'
 }, {
     name: 'New England Aquarium',
     addr: '1 Central Wharf, Boston, MA 02110',
     Lat: 42.359239,
     Lng: -71.049189,
+    type: 'aquarium',
     info: 'A global leader in ocean exploration and marine conservation.'
 }, {
     name: 'Faneuil Hall',
     addr: '1 Faneuil Hall Sq, Boston, MA 02109',
     Lat: 42.360133,
     Lng: -71.055555,
+    type: 'historic',
     info: 'Faneuil Hall Marketplace, one of the nations premier urban marketplaces, is a popular attraction in Boston.'
 }, {
     name: 'Boston College',
     addr: '140 Commonwealth Avenue, Chestnut Hill, MA 02467',
     Lat: 42.340064,
     Lng: -71.166876,
+    type: 'university',
     info: "A private Jesuit Catholic research university located in the village of Chestnut Hill, Massachusetts"
 }, {
     name: 'Museum of Fine Arts',
     addr: '465 Huntington Ave, Boston, MA 02115',
     Lat: 42.339457,
     Lng: -71.094143,
+    type: null,
     info: "Explore one of the most comprehensive museums in the world with art from ancient Egyptian to contemporary"
 }];
 
