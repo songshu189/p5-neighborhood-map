@@ -57,7 +57,7 @@ var model = [{
 var map = null,
     infowindow = null,
     markers = [],
-    firstclick = true;
+    firstclick = true,
     currentname = '',
     lastname = '';
 
@@ -113,10 +113,10 @@ var showInfoWindow = function(location, self) {
         location.marker.setAnimation(google.maps.Animation.BOUNCE);
         setTimeout(function () {
             location.marker.setAnimation(null);
-            }, 700); // current maps duration of one bounce (v3.13)
+            }, 800); // current maps duration of one bounce (v3.13)
         
         // Set the infowindow content
-        infowindow.setContent($('#marker-info').html());
+        infowindow.setContent($markerInfo.html());
         infowindow.open(map, location.marker);
     };
 };
@@ -229,7 +229,7 @@ var ViewModel = function() {
                  });
             }
             
-            if(photos_len==0) {
+            if(photos_len===0) {
                 resetSlider([], 'Relevant Flickr Images(None)');
             }
         }
@@ -355,8 +355,8 @@ var ViewModel = function() {
                     // do something with data
                     var title = data[1];
                     var link = data[3];
-                    if(link.length == 0) {
-                        if(search == name) {
+                    if(link.length === 0) {
+                        if(search === name) {
                             resetWiki([], 'Relevant Wikipedia Links(None)');
                         }
                         else {
@@ -409,4 +409,5 @@ var $flickrHeader = $('#flickr-header'),
     $wikiHeader = $('#wikipedia-header'),
     $searchIcon = $('#searchicon'),
     $detailContainer = $('#detail-container'),
-    $locationsContainer = $("#locations-container");
+    $locationsContainer = $("#locations-container"),
+    $markerInfo = $('#marker-info');
