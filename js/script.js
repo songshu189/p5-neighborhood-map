@@ -106,7 +106,8 @@ var Location = function(data) {
     this.marker=new google.maps.Marker({
                         position: this.position,
                         title: data.name,
-                        map: map
+                        map: map,
+                        icon: 'images/' + data.type + '.png'
                     });
 };
 
