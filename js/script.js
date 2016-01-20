@@ -103,12 +103,20 @@ var Location = function(data) {
 
     this.position = new google.maps.LatLng(data.Lat, data.Lng);
     
-    this.marker=new google.maps.Marker({
+    if(data.type===null) {
+        this.marker=new google.maps.Marker({
+                        position: this.position,
+                        title: data.name,
+                        map: map
+                    });
+    } else {
+        this.marker=new google.maps.Marker({
                         position: this.position,
                         title: data.name,
                         map: map,
                         icon: 'images/' + data.type + '.png'
                     });
+    }   
 };
 
 // Return a function to show the marker and infowindow of the location
