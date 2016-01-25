@@ -69,6 +69,8 @@ var map = null,
     firstclick = true,
     currentname = '',
     lastname = '';
+var flickrLoaded = false,
+    wikiLoaded = false;
 
 function initMap() {
     map = new google.maps.Map(document.getElementById('map'), {
@@ -82,7 +84,7 @@ function initMap() {
     ko.applyBindings(new ViewModel());
 }
 
-// Hide all markers 
+// Hide all markers
 function clearMarkers() {
     for (var i=0; i<markers.length; i++) {
         markers[i].setMap(null);
@@ -102,7 +104,7 @@ var Location = function(data) {
     this.data = data;
 
     this.position = new google.maps.LatLng(data.Lat, data.Lng);
-    
+
     if(data.type===null) {
         this.marker=new google.maps.Marker({
                         position: this.position,
@@ -116,7 +118,7 @@ var Location = function(data) {
                         map: map,
                         icon: 'images/' + data.type + '.png'
                     });
-    }   
+    }
 };
 
 // Return a function to show the marker and infowindow of the location
@@ -126,13 +128,13 @@ var showInfoWindow = function(location, self) {
         self.currentLocation(location);
 
         self.getotherapidata(location);
-        
+
         // Let the marker bounce once
         location.marker.setAnimation(google.maps.Animation.BOUNCE);
         setTimeout(function () {
             location.marker.setAnimation(null);
             }, 800); // current maps duration of one bounce (v3.13)
-        
+
         // Set the infowindow content
         infowindow.setContent($markerInfo.html());
         infowindow.open(map, location.marker);
@@ -143,37 +145,37 @@ var ViewModel = function() {
     var self = this;
 
     var neighborMap = JSON.parse(localStorage.neighborMap);
-    
+
     var bounds = new google.maps.LatLngBounds();
     var locations = [];//ko.observableArray();
-    
+
     // Iterate over all the locations, create encapsulated object
     // Push marker to markers array
     // Add eventListener for every marker
     // Call fitBounds to let all locations show in the map
     for(var i=0; i<model.length; i++) {
         var location = new Location(model[i]);
-        
+
         markers.push(location.marker);
         locations.push(location);
         bounds.extend(location.position);
-        
+
         google.maps.event.addListener(location.marker, 'click', showInfoWindow(location, self));
 
         map.fitBounds(bounds);
     }
-    
+
     // currentLocation observable variable used when infowindow is showing
     self.currentLocation = ko.observable(locations[0]);
 
     // searchItem observable variable used to catch user input to filter locations
     self.searchItem = ko.observable('');
-    
+
     // showInfoWindow when user clicks marker or clicks list view item
     self.showInfoWindow = function(data) {
         showInfoWindow(data, self)();
     };
-    
+
     // resultList computed observable updated instantly when user input search items
     // This variable observes searchItem observable variable
     self.resultList = ko.computed(function(){
@@ -181,7 +183,7 @@ var ViewModel = function() {
                 var searchItem = self.searchItem().toLowerCase();
                 return location.data.name.toLowerCase().indexOf(searchItem) >= 0;
             });
-        
+
         clearMarkers();
         resetMarkers(filtered);
         return filtered;
@@ -189,7 +191,7 @@ var ViewModel = function() {
 
     // wikilist observable array used for saving place-related wiki urls
     self.wikilist = ko.observableArray();
-    
+
     // flickrimglist observable array used for saving place-related flickr images url
     self.flickrimglist = ko.observableArray();
 
@@ -198,7 +200,7 @@ var ViewModel = function() {
 
         // reset flex slider flickr photos
         function resetSlider(imglist, flickrheader) {
-             
+
              // Remove related flexslider javascript object, clear images and
              // navigation html element
             if(imglist.length>0 && lastname !== currentname) {
@@ -208,13 +210,17 @@ var ViewModel = function() {
                 $('#slides').html('');
             }
             $flickrHeader.text(flickrheader);
-            
+
             // Reset observable array
             self.flickrimglist(imglist);
 
             $('#flexslider').flexslider({ slideshow: false, controlNav: false});
 
-            $searchIcon.toggleClass('searchicon loading');
+            flickrLoaded = true;
+            if(wikiLoaded) {
+                $searchIcon.toggleClass('searchicon loading');
+            }
+
             if(firstclick) {
                 if($locationsContainer.is(':hidden')) $locationsContainer.show();
                 $detailContainer.show().css('-webkit-overflow-scrolling', 'touch');
@@ -222,7 +228,7 @@ var ViewModel = function() {
             }
             lastname = currentname;
         }
-        
+
         // Process flickr.photos.search results json
         function processPhotoSearch(json) {
 
@@ -230,10 +236,10 @@ var ViewModel = function() {
                 resetSlider([], 'Failed to get flickr images');
                 return;
             }
-            
+
             var photos = json.photos.photo;
             var photos_len = photos.length;
-            
+
             cc=0;
             for(var i=0; i<photos_len; i++){
                 var sizeurl = flickrsizeurl + apikey + '&photo_id=' + photos[i].id + format;
@@ -246,12 +252,12 @@ var ViewModel = function() {
                  .error(function() {
                  });
             }
-            
+
             if(photos_len===0) {
                 resetSlider([], 'Relevant Flickr Images(None)');
             }
         }
-        
+
         // Process flickr.photos.getSizes result json
         // only keep photos that have appropriate width and height
         function processSizes(sizes, nn) {
@@ -259,7 +265,7 @@ var ViewModel = function() {
             if(sizes.stat!='ok') {
                 return ;
             }
-                
+
             var imgsizes = sizes.sizes.size;
 
             // find the index of those image with width closest to 500
@@ -273,9 +279,9 @@ var ViewModel = function() {
                     }
                 }
             }
-                        
+
             cc += 1;
-                        
+
             // Do not show photos height great than width
             if(parseInt(imgsizes[idx].width) > (imgsizes[idx].height))
                 imglist.push(imgsizes[idx].source);
@@ -292,11 +298,13 @@ var ViewModel = function() {
                 resetSlider(imglist, 'Relevant Flickr Images');
             }
         }
-               
+
         $searchIcon.toggleClass('searchicon loading');
+        flickrLoaded = false;
+        wikiLoaded = false;
 
         // Search flickr to find photos related to the location
-        
+
         var addr = location.data.addr;
         var result = /,((\s\w*\s?\w+),\s[A-Z]{2})/g.exec(addr);
 
@@ -305,7 +313,7 @@ var ViewModel = function() {
         var name = location.data.name;
         currentname = name;
         var savedInfo = neighborMap[name];
-        
+
         var imglist = [];
         var cc = 0;
 
@@ -317,11 +325,11 @@ var ViewModel = function() {
             // no saved info, then search with flickr javascript api
             searchFlickr();
         }
-        
+
         function searchFlickr() {
             var placefindurl = flickrfindurl + apikey + '&query=' + name + citystate + format;
 
-            // Use flickr.places.search service to search the place_id of the location 
+            // Use flickr.places.search service to search the place_id of the location
             // to narrow photo search results
             $.getJSON(placefindurl)
             .done(function (json) {
@@ -333,7 +341,7 @@ var ViewModel = function() {
                 var pid = json.places.place[0].place_id;
                 var photosearchurl = flickrsearchurl + apikey + '&text=' + name + citystate +
                         '&place_id=' + pid + '&per_page=6' + format;
-            
+
                 // Search photos with place_id and name of the place
                 $.getJSON(photosearchurl)
                  .done(function(data) {
@@ -357,11 +365,11 @@ var ViewModel = function() {
             resetWiki(savedInfo['wiki'], 'Relevant Wikipedia Links');
             return;
         }
-        
+
         wikiSearch(name + city);
-        
+
         // Search related wikipedia pages
-        // Search two times, first search with location name and city name, 
+        // Search two times, first search with location name and city name,
         // If no result, then search with the location name.
         function wikiSearch(search) {
             var wikiURL = wikisearchurl + search + '&format=json&callback=wikiCallback';
@@ -382,13 +390,13 @@ var ViewModel = function() {
                         }
                     }
                     else {
-                        
+
                         var wikilist = [];
                         var wklen = Math.min(4, link.length);
                         for(var i=0; i<wklen; i++) {
                             wikilist.push({link:link[i], title:title[i]});
                         }
- 
+
                         if(neighborMap[name]) {
                             neighborMap[name].wiki = wikilist;
                         }
@@ -401,11 +409,15 @@ var ViewModel = function() {
                 }
             });
         }
-        
+
         function resetWiki(wikilist, wikiheader) {
             $wikiHeader.text(wikiheader);
             self.wikilist(wikilist);
             clearTimeout(wikiRequestTimeout);
+            wikiLoaded = true;
+            if(flickrLoaded) {
+                $searchIcon.toggleClass('searchicon loading');
+            }
         }
 	};
 };
